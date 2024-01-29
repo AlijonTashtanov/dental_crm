@@ -1,0 +1,16 @@
+@extends('admin.layouts.app')
+@section('title')
+    $TITLE$
+@endsection
+@section('content')
+    <x-headers icon="$ICON$" title="$TITLE$" parent="" parent-icon="" parent-route="$ROUTE$.index"/>
+    <div class="card">
+        <div class="card-body">
+            <form action="{{route('$ROUTE$.update', $response->id)}}" method="POST">
+                @csrf
+                @method('PUT')
+                @include('$ROUTE$.form')
+            </form>
+        </div>
+    </div>
+@endsection

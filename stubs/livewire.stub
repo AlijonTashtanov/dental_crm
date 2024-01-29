@@ -1,0 +1,12 @@
+<?php
+
+namespace [namespace];
+
+use App\Http\Livewire\BaseLivewire;
+
+class [class] extends BaseLivewire
+{
+    public $path = ''; // component view path
+    public $model = null; // model
+    public $route = ''; // route for actions(CRUD)
+}

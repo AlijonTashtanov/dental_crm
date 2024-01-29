@@ -1,0 +1,9 @@
+  RewriteEngine On
+
+  # remove trailing slash
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} (.+)/$
+  RewriteRule ^ %1 [L,R=301,NE]
+
+  # route all requests to public/
+  RewriteRule ^(.*)$ public/$1 [L]

@@ -1,0 +1,13 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Models\$MODEL_NAME$;
+
+class $CLASS_NAME$Service extends AbstractService
+{
+    public function __construct($MODEL_NAME$ $$LOWER_MODEL_NAME$)
+    {
+        $this->model = $$LOWER_MODEL_NAME$;
+    }
+}

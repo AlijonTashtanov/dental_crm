@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\$CLASS_NAME$Service;
+
+class $CLASS_NAME$Controller extends AbstractController
+{
+    protected $dir = '$LOWER_DIR_NAME$';
+    protected $serviceClass = $CLASS_NAME$Service::class;
+
+    public function setConfig()
+    {
+        $this->config = [
+            'rules' => [
+                //
+            ]
+        ];
+    }
+}
