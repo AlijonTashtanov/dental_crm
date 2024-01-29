@@ -76,7 +76,9 @@ class AbstractService
      */
     public function update(array $data, $id)
     {
+
         $item = $this->show($id);
+
         $fields = $this->getFields();
 
         $rules = [];
@@ -88,7 +90,7 @@ class AbstractService
             return response()->json(['errors' => $validator->errors()], 422);
         }
         $data = $validator->validated();
-        $item = new $this->model;
+
         foreach ($fields as $field) {
             $field->fill($item, $data);
         }

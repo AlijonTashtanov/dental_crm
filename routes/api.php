@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\PolyclinicController;
+use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\ReceptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +27,16 @@ Route::group(['prefix' => 'polyclinic'], function () {
     Route::post('/verify', [PolyclinicController::class, 'verify']);
     Route::post('/login', [PolyclinicController::class, 'login']);
 });
+
+Route::middleware(['auth:api', 'api_admin'])->group(function () {
+    Route::group(['prefix' => 'staff'], function () {
+        Route::get('/index', [DoctorController::class, 'index']);
+        // Doctor
+        Route::post('/doctor/create', [DoctorController::class, 'create']);
+        Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
+        // Reception
+        Route::post('/reception/create', [ReceptionController::class, 'create']);
+        Route::put('/reception/update/{id}', [ReceptionController::class, 'update']);
+    });
+});
+

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Status;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,7 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasRoles;
+    use Status;
 
     /**
      * @var int
@@ -43,6 +45,11 @@ class User extends Authenticatable
     public static $role_reception = 4;  // Klinika uchun qabulxona hisoblanadi
 
     /**
+     * @var int
+     */
+    public static $role_technic = 5;  // Klinika uchun texnik hisoblanadi
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]
@@ -54,7 +61,11 @@ class User extends Authenticatable
         'polyclinic_id',
         'phone',
         'username',
-        'role'
+        'role',
+        'percent_treatment',
+        'color',
+        'sort_order',
+        'status',
     ];
 
     /**
@@ -104,7 +115,8 @@ class User extends Authenticatable
             self::$role_superadmin => 'Super Admin',
             self::$role_admin => 'Admin',
             self::$role_doctor => 'Doktor',
-            self::$role_reception => 'Qabulxona'
+            self::$role_reception => 'Qabulxona',
+            self::$role_technic => 'Texnik',
         ];
     }
 
@@ -114,5 +126,13 @@ class User extends Authenticatable
     public function getUserRoleName()
     {
         return Arr::get(self::userRoles(), $this->role);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isApiAdmin()
+    {
+        return $this->role == self::$role_admin;
     }
 }

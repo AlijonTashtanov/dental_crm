@@ -28,6 +28,8 @@ class UserResource extends JsonResource
             'roleName' => $this->getUserRoleName(),
             'polyclinic_id' => $this->polyclinic_id,
             'polyclinicName' => $this->polyclinic->name,
+            'color' => $this->color,
+            'percent_treatment' => $this->percent_treatment,
         ];
     }
 }

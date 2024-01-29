@@ -1,11 +1,11 @@
 @extends('admin.layouts.app')
 @section('title')
-    Tariffs
+    Obunalar
 @endsection
 @section('content')
-    <x-header icon="fas fa-circle" title="Tariffs"/>
+    <x-header icon="fas fa-circle" title="Obunalar"/>
     <div class="d-flex justify-content-end py-2">
-        <a href="{{route('admin.tariffs.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Create</a>
+        <a href="{{route('admin.tariffs.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Qo'shish</a>
     </div>
     @livewire('tariff.tariff-table')
     {{-- use livewire table here --}}

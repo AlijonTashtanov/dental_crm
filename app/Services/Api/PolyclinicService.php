@@ -337,7 +337,8 @@ class PolyclinicService extends AbstractService
                 'phone' => $model->phone,
                 'username' => $model->username,
                 'role' => User::$role_admin,
-                'position' => "Admin"
+                'position' => "Admin",
+                'status' => User::$status_active
             ]);
 
             $token = $user->createToken('API Token')->accessToken;

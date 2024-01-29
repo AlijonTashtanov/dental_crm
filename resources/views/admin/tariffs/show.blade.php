@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 @section('title')
-    Tariffs
+    {{$response->getTranslation('name','uz')}}
 @endsection
 @section('content')
-    <x-headers title="Tariffs" icon="fas fa-circle" parent="parent" parent-route="admin.tariffs.index"
+    <x-headers title="{{$response->getTranslation('name','uz')}}" icon="fas fa-circle" parent="Obunalar" parent-route="admin.tariffs.index"
                parent-icon=""/>
     <div class="card card-outline card-primary">
         <div class="card-header">
@@ -20,6 +20,38 @@
                 <tr>
                     <th>ID</th>
                     <td>{{$response->id}}</td>
+                </tr>
+                <tr>
+                    <th>Obuna nomi [uz]</th>
+                    <td>{{$response->getTranslation('name','uz')}}</td>
+                </tr>
+                <tr>
+                    <th>Obuna nomi [ru]</th>
+                    <td>{{$response->getTranslation('name','ru')}}</td>
+                </tr>
+                <tr>
+                    <th>Obuna nomi [en]</th>
+                    <td>{{$response->getTranslation('name','en')}}</td>
+                </tr>
+                <tr>
+                    <th>Davomiyligi</th>
+                    <td>{{$response->getDurationName()}}</td>
+                </tr>
+                <tr>
+                    <th>Holati</th>
+                    <td>{!! $response->getStatusBadgeName() !!}</td>
+                </tr>
+                <tr>
+                    <th>Bepulmi</th>
+                    <td>{!! $response->getIsFreeBadgeText() !!}</td>
+                </tr>
+                <tr>
+                    <th>Yaratilgan vaqti</th>
+                    <td>{{$response->created_at}}</td>
+                </tr>
+                <tr>
+                    <th>Tahrirlangan vaqti</th>
+                    <td>{{$response->updated_at}}</td>
                 </tr>
             </table>
         </div>
