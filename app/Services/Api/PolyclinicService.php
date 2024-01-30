@@ -315,6 +315,7 @@ class PolyclinicService extends AbstractService
         $model = TempUser::where('is_verified', true)
             ->where('code', $data['code'])
             ->where('phone', clearPhone($data['phone']))
+            ->orderBy('id', 'desc')
             ->first();
 
         $model->is_registered = true;
