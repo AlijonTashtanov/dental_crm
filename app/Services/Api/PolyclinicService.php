@@ -360,7 +360,7 @@ class PolyclinicService extends AbstractService
             'message' => 'success',
             'statusCode' => 200,
             'data' => [
-                'user' => $user,
+                'user' => UserResource::make($user),
                 'token' => $token
             ]
         ];
@@ -413,6 +413,11 @@ class PolyclinicService extends AbstractService
                 'data' => $errors
             ];
         }
+
+        $data = [
+            'username' => $data['username'],
+            'password' => $data['password']
+        ];
 
         if (Auth::attempt($data)) {
             $user = UserResource::make(auth()->user());
