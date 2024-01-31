@@ -389,4 +389,24 @@ class DoctorService extends AbstractService
             'data' => null
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function checkSortOrder()
+    {
+        $staffCount = User::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('status', '!=', User::$status_deleted)
+            ->where('role', '!=', User::$role_admin)
+            ->count();
+
+        return [
+            'status' => true,
+            'message' => 'success',
+            'statusCode' => 200,
+            'data' => [
+                'nextCount' => ++$staffCount
+            ]
+        ];
+    }
 }

@@ -57,4 +57,11 @@ class DoctorController extends AbstractController
         return $this->sendResponse($item);
     }
 
+    public function checkSortOrder()
+    {
+        $item = $this->service->checkSortOrder();
+
+        return $this->sendResponse($item);
+    }
+
 }

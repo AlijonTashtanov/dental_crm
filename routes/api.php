@@ -34,6 +34,7 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::get('/index', [DoctorController::class, 'index']);
         Route::get('/show/{id}', [DoctorController::class, 'show']);
         Route::delete('/delete/{id}', [DoctorController::class, 'destroy']);
+        Route::get('/checkSortOrder', [DoctorController::class, 'checkSortOrder']);
         // Doctor
         Route::post('/doctor/create', [DoctorController::class, 'create']);
         Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
