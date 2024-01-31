@@ -37,6 +37,10 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         // Reception
         Route::post('/reception/create', [ReceptionController::class, 'create']);
         Route::put('/reception/update/{id}', [ReceptionController::class, 'update']);
+
+        // Technic
+        Route::post('/technic/create', [ReceptionController::class, 'create']);
+        Route::put('/technic/update/{id}', [ReceptionController::class, 'update']);
     });
 });
 

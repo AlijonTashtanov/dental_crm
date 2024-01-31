@@ -30,6 +30,7 @@ class UserResource extends JsonResource
             'polyclinicName' => $this->polyclinic->name,
             'color' => $this->color,
             'percent_treatment' => $this->percent_treatment,
+            'sort_order' => $this->sort_order,
         ];
     }
 }

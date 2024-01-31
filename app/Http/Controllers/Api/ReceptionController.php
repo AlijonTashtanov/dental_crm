@@ -18,4 +18,15 @@ class ReceptionController extends AbstractController
 
         return $this->sendResponse($item);
     }
+
+    /**
+     * @return array|JsonResponse
+     */
+    public function update($id)
+    {
+
+        $item = $this->service->update(request()->all(), $id);
+
+        return $this->sendResponse($item);
+    }
 }

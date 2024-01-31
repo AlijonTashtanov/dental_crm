@@ -110,8 +110,8 @@ class DoctorService extends AbstractService
             $user->percent_treatment = $data['percent_treatment'];
             $user->color = $data['color'];
             $user->sort_order = $data['sort_order'];
-            $user->polyclinic_id = Auth::user()->polyclinic_id;
-            $user->status = User::$status_active;
+//            $user->polyclinic_id = Auth::user()->polyclinic_id;
+//            $user->status = User::$status_active;
 
             if ($user->save()) {
                 DB::commit();
@@ -221,6 +221,45 @@ class DoctorService extends AbstractService
             ];
         }
 
+        DB::beginTransaction();
+        try {
+
+            $item->name = $data['name'];
+            $item->position = $data['position'];
+            $item->username = $data['username'];
+            if (isset($data['password'])) {
+                $item->password = bcrypt($data['password']);
+            } else {
+                $item->password = $this->user->password;
+            }
+            $item->role = User::$role_doctor;
+            $item->percent_treatment = $data['percent_treatment'];
+            $item->color = $data['color'];
+            $item->sort_order = $data['sort_order'];
+//            $user->status = User::$status_active;
+
+            if ($item->save()) {
+                DB::commit();
+            } else {
+                DB::rollback();
+                return [
+                    'status' => false,
+                    'message' => 'save user error',
+                    'statusCode' => 500,
+                    'data' => null
+                ];
+            }
+
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return [
+                'status' => false,
+                'message' => 'Server error',
+                'statusCode' => 500,
+                'data' => $ex->getMessage()
+            ];
+        }
+
 
         return [
             'status' => true,
@@ -239,7 +278,7 @@ class DoctorService extends AbstractService
             TextField::make('name')->setRules('required|min:3|max:255'),
             TextField::make('position')->setRules('required|min:3|max:255'),
             TextField::make('username')->setRules('required|min:5|max:1024|unique:users,username,' . $this->user->id),
-//            TextField::make('password')->setRules('required|min:5|max:1024'),
+            TextField::make('password')->setRules('nullable|min:5|max:1024'),
 //            TextField::make('role')->setRules('required|integer|between:3,4'),
             TextField::make('percent_treatment')->setRules('required|integer|min:0|max:100'),
             TextField::make('sort_order')->setRules('required|integer|min:0'),
