@@ -7,6 +7,9 @@ use App\Traits\Status;
 
 class TariffService extends AbstractService
 {
+    /**
+     * @param Tariff $tariff
+     */
     public function __construct(Tariff $tariff)
     {
         $this->model = $tariff;

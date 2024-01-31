@@ -319,6 +319,17 @@ class DoctorService extends AbstractService
             ->first();
 
         if ($model) {
+
+            if ($model->status == User::$status_deleted) {
+
+                return [
+                    'status' => false,
+                    'message' => 'Staff deleted',
+                    'statusCode' => 403,
+                    'data' => null
+                ];
+            }
+
             return [
                 'status' => true,
                 'message' => 'success',
@@ -341,22 +352,36 @@ class DoctorService extends AbstractService
      */
     public function destroy($id)
     {
-        $item = $this->model::findOrFail($id);;
+        $item = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('id', $id)
+            ->first();
 
-        $item->username = $item->username . '_' . $item->id;
-        $item->status = User::$status_deleted;
-        $item->deleted_at = date('Y-m-d H:i:s');
-        $item->deleted_by = Auth::user()->id;
+        if ($item) {
 
-        if ($item->save()) {
-            return [
-                'status' => true,
-                'message' => 'success',
-                'statusCode' => 200,
-                'data' => UserResource::make($item)
-            ];
+            if ($item->status == User::$status_deleted) {
+
+                return [
+                    'status' => false,
+                    'message' => 'Staff deleted',
+                    'statusCode' => 403,
+                    'data' => null
+                ];
+            }
+
+            $item->username = $item->username . '_' . $item->id;
+            $item->status = User::$status_deleted;
+            $item->deleted_at = date('Y-m-d H:i:s');
+            $item->deleted_by = Auth::user()->id;
+
+            if ($item->save()) {
+                return [
+                    'status' => true,
+                    'message' => 'success',
+                    'statusCode' => 200,
+                    'data' => UserResource::make($item)
+                ];
+            }
         }
-
         return [
             'status' => false,
             'message' => 'There was a problem deleting',
