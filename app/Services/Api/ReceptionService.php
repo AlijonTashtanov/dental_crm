@@ -148,7 +148,28 @@ class ReceptionService extends AbstractService
     public function update(array $data, $id)
     {
         $item = $this->show($id);
+
+        if ($item->status != User::$status_deleted) {
+
+            return [
+                'status' => false,
+                'message' => "User deleted",
+                'statusCode' => 403,
+                'data' => null
+            ];
+        }
+
         $this->user = $item;
+
+        if ($item->role != User::$role_reception) {
+            return [
+                'status' => false,
+                'message' => "Siz noto'g'ri apiga ma'lumot yuboryabsiz!",
+                'statusCode' => 403,
+                'data' => null
+            ];
+        }
+
 
         $fields = $this->getUpdateFields();
 

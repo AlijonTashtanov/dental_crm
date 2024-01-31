@@ -26,6 +26,17 @@ class DoctorController extends AbstractController
     }
 
     /**
+     * @param $id
+     * @return array|JsonResponse
+     */
+    public function show($id)
+    {
+        $item = $this->service->show($id);
+
+        return $this->sendResponse($item);
+    }
+
+    /**
      * @return array|JsonResponse
      */
     public function create()
@@ -45,4 +56,5 @@ class DoctorController extends AbstractController
 
         return $this->sendResponse($item);
     }
+
 }

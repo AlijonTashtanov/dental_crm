@@ -26,6 +26,13 @@ trait Status
 
 
     /**
+     * Holati o'chirilgan hiosblanadi
+     * @var int
+     */
+    public static int $status_deleted = 3;
+
+
+    /**
      * @return string[]
      */
     public static function statuses()
@@ -33,7 +40,8 @@ trait Status
         return [
             self::$status_active => 'Faol',
             self::$status_inactive => 'Nofaol',
-            self::$status_waiting => "Kutish holatida"
+            self::$status_waiting => "Kutish holatida",
+            self::$status_deleted => "O'chirilgan",
         ];
     }
 
@@ -58,6 +66,11 @@ trait Status
         if ($this->status == self::$status_waiting) {
 
             return "<span class='badge badge-warning'>{$this->getStatusName()}</span>";
+        }
+
+        if ($this->status == self::$status_deleted) {
+
+            return "<span class='badge badge-secondary'>{$this->getStatusName()}</span>";
         }
 
         return "<span class='badge badge-success'>{$this->getStatusName()}</span>";
