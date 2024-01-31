@@ -3,8 +3,10 @@
 namespace App\Services\Api;
 
 use App\Fields\Store\TextField;
+use App\Http\Resources\RegionResource;
 use App\Http\Resources\UserResource;
 use App\Models\Polyclinic;
+use App\Models\Region;
 use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -451,5 +453,21 @@ class PolyclinicService extends AbstractService
             TextField::make('password')->setRules('required|min:5|max:1024'),
         ];
     }
+
     //</editor-fold>
+
+    /**
+     * @return array
+     */
+    public function regions()
+    {
+        $regions = Region::all();
+
+        return [
+            'status' => true,
+            'message' => 'success',
+            'statusCode' => 200,
+            'data' => RegionResource::collection($regions)
+        ];
+    }
 }

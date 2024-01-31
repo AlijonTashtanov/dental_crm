@@ -58,6 +58,8 @@ class UserObserver
      */
     public function forceDeleted(User $user)
     {
-
+//        $user->username = $user->username . '_' . $user->id;
+//        $user->status = User::$status_deleted;
+//        $user->save();
     }
 }

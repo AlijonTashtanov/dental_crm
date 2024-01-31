@@ -23,6 +23,10 @@ if (!function_exists('lang')) {
 // Telefon raqamni tozalab beradi
 // +998916700607 => 998916700607
 if (!function_exists('clearPhone')) {
+    /**
+     * @param $phone
+     * @return string
+     */
     function clearPhone($phone)
     {
         return strtr($phone, [

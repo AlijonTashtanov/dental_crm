@@ -14,6 +14,14 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{route('admin.regions.index')}}" class="nav-link @if (request()->is('admin/regions')) active @endif">
+        <i class="nav-icon fas fa-globe-asia"></i>
+        <p>
+            Viloyatlar
+        </p>
+    </a>
+</li>
 {{-- <li class="nav-item menu-open">
     <a href="#" class="nav-link active">
         <i class="nav-icon fas fa-tachometer-alt"></i>

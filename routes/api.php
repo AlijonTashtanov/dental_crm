@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\PolyclinicController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\ReceptionController;
+use App\Http\Controllers\Api\ServiceCategoryController;
 use App\Http\Controllers\Api\TechnicController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,8 @@ Route::group(['prefix' => 'polyclinic'], function () {
     Route::post('/login', [PolyclinicController::class, 'login']);
 });
 
+Route::get('/regions', [PolyclinicController::class, 'regions']);
+
 Route::middleware(['auth:api', 'api_admin'])->group(function () {
     Route::group(['prefix' => 'staff'], function () {
         Route::get('/index', [DoctorController::class, 'index']);
@@ -46,6 +49,12 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         // Technic
         Route::post('/technic/create', [TechnicController::class, 'create']);
         Route::put('/technic/update/{id}', [TechnicController::class, 'update']);
+    });
+
+    // Service Category
+    Route::group(['prefix' => 'service'], function () {
+        Route::get('/category/index', [ServiceCategoryController::class, 'index']);
+        Route::post('/category/create', [ServiceCategoryController::class, 'createCategory']);
     });
 });
 

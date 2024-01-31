@@ -44,4 +44,14 @@ class PolyclinicController extends AbstractController
 
         return $this->sendResponse($item);
     }
+
+    /**
+     * @return array|JsonResponse
+     */
+    public function regions()
+    {
+        $item = $this->service->regions(request()->all());
+
+        return $this->sendResponse($item);
+    }
 }
