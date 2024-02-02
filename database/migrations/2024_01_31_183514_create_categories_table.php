@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->tinyInteger('status')->nullable();
             $table->string('color')->nullable();
+            $table->bigInteger('sort_order')->default(99999999999)->nullable();
             $table->dateTime('deleted_at')->nullable();
             $table->bigInteger('deleted_by')->nullable();
             $table->timestamps();

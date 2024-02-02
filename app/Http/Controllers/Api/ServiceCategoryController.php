@@ -23,4 +23,35 @@ class ServiceCategoryController extends AbstractController
         return $this->sendResponse($item);
     }
 
+    /**
+     * @return array|JsonResponse
+     */
+    public function updateCategory($id)
+    {
+        $item = $this->service->updateCategory($id, request()->all());
+
+        return $this->sendResponse($item);
+    }
+
+    /**
+     * @param $id
+     * @return array|JsonResponse
+     */
+    public function destroyCategory($id)
+    {
+        $item = $this->service->categoryDestroy($id);
+
+        return $this->sendResponse($item);
+    }
+
+    /**
+     * @return array|JsonResponse
+     */
+    public function createService()
+    {
+        $item = $this->service->createService(request()->all());
+
+        return $this->sendResponse($item);
+    }
+
 }

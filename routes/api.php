@@ -53,8 +53,16 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
 
     // Service Category
     Route::group(['prefix' => 'service'], function () {
+        // category
         Route::get('/category/index', [ServiceCategoryController::class, 'index']);
         Route::post('/category/create', [ServiceCategoryController::class, 'createCategory']);
+        Route::put('/category/update/{id}', [ServiceCategoryController::class, 'updateCategory']);
+        Route::delete('/category/delete/{id}', [ServiceCategoryController::class, 'categoryDestroy']);
+
+        // service
+        Route::post('/service/create', [ServiceCategoryController::class, 'createCategory']);
+        Route::put('/service/update/{id}', [ServiceCategoryController::class, 'updateCategory']);
+        Route::delete('/service/delete/{id}', [ServiceCategoryController::class, 'destroyCategory']);
     });
 });
 

@@ -123,10 +123,20 @@ class TechnicService extends AbstractService
      */
     public function update(array $data, $id)
     {
-        $item = $this->show($id);
-        $this->user = $item;
+        $item = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('id', $id)
+            ->first();
 
-        if ($item->status != User::$status_deleted) {
+        if (!$item) {
+            return [
+                'status' => false,
+                'message' => "Staff not found",
+                'statusCode' => 403,
+                'data' => null
+            ];
+
+        }
+        if ($item->status == User::$status_deleted) {
 
             return [
                 'status' => false,

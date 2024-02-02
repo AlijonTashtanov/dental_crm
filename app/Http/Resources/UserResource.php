@@ -31,6 +31,8 @@ class UserResource extends JsonResource
             'color' => $this->color,
             'percent_treatment' => $this->percent_treatment,
             'sort_order' => $this->sort_order,
+            'status' => $this->status,
+            'statusName' => $this->getStatusName()
         ];
     }
 }

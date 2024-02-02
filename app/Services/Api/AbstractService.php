@@ -112,4 +112,21 @@ class AbstractService
     {
         return [];
     }
+
+    /**
+     * @param bool $status
+     * @param string $message
+     * @param int $statusCode
+     * @param array|null $data
+     * @return array
+     */
+    public function sendResponse(bool $status = true, string $message = 'success', int $statusCode = 200, array $data = null)
+    {
+        return [
+            'status' => $status,
+            'message' => $message,
+            'statusCode' => $statusCode,
+            'data' => $data
+        ];
+    }
 }
