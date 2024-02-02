@@ -109,6 +109,7 @@ class DoctorService extends AbstractService
             $user->role = User::$role_doctor;
             $user->percent_treatment = $data['percent_treatment'];
             $user->color = $data['color'];
+            $user->status = User::$status_active;
             $user->sort_order = $data['sort_order'];
 //            $user->polyclinic_id = Auth::user()->polyclinic_id;
 //            $user->status = User::$status_active;
