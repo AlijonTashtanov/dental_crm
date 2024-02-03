@@ -443,6 +443,10 @@ class PolyclinicService extends AbstractService
         ];
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     public function doctorLogin(array $data)
     {
         $fields = $this->getLoginFields();
@@ -480,7 +484,7 @@ class PolyclinicService extends AbstractService
         if (Auth::attempt($data)) {
             $user = UserResource::make(auth()->user());
 
-            if ($user->role != User::$role_doctor){
+            if ($user->role != User::$role_doctor) {
                 return [
                     'status' => false,
                     'message' => 'Username or Password is incorrect',

@@ -78,5 +78,4 @@ class ServiceCategoryController extends AbstractController
     }
 
 
-
 }

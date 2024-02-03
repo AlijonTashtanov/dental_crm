@@ -59,7 +59,7 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::get('/category/index', [ServiceCategoryController::class, 'index']);
         Route::post('/category/create', [ServiceCategoryController::class, 'createCategory']);
         Route::put('/category/update/{id}', [ServiceCategoryController::class, 'updateCategory']);
-        Route::delete('/category/delete/{id}', [ServiceCategoryController::class, 'categoryDestroy']);
+        Route::delete('/category/delete/{id}', [ServiceCategoryController::class, 'destroyCategory']);
 
         // service
         Route::post('/create', [ServiceCategoryController::class, 'createService']);

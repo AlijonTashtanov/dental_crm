@@ -265,9 +265,14 @@ class CategoryService extends AbstractService
         return $this->sendResponse();
     }
 
+    /**
+     * @param $id
+     * @param array $data
+     * @return array
+     */
     public function updateService($id, array $data)
     {
-        $item =$this->serviceModel::where('polyclinic_id', Auth::user()->polyclinic_id)
+        $item = $this->serviceModel::where('polyclinic_id', Auth::user()->polyclinic_id)
             ->where('id', $id)
             ->first();
 
@@ -308,7 +313,6 @@ class CategoryService extends AbstractService
         DB::beginTransaction();
         try {
 
-            $item->polyclinic_id = Auth::user()->polyclinic_id;
             $item->name = $data['name'];
             $item->category_id = $data['category_id'];
             $item->material_price = $data['material_price'];
@@ -331,9 +335,14 @@ class CategoryService extends AbstractService
 
         }
 
-        return $this->sendResponse(true, 'success', 200);
+        return $this->sendResponse();
     }
 
+    /**
+     * Xizmatni o'chirish uchun method
+     * @param $id
+     * @return array
+     */
     public function serviceDestroy($id)
     {
         $item = $this->serviceModel::where('polyclinic_id', Auth::user()->polyclinic_id)
@@ -367,9 +376,9 @@ class CategoryService extends AbstractService
     {
         return [
             TextField::make('name')->setRules('required|min:3|max:255'),
-            TextField::make('category_id')->setRules('required|numeric'),
-            TextField::make('material_price')->setRules('required|numeric'),
-            TextField::make('technic_price')->setRules('required|numeric'),
+            TextField::make('category_id')->setRules('required|integer'),
+            TextField::make('material_price')->setRules('required|integer'),
+            TextField::make('technic_price')->setRules('required|integer'),
             TextField::make('status')->setRules('required|integer|between:0,1'),
         ];
     }
