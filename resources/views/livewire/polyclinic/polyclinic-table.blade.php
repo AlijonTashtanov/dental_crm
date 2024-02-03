@@ -7,13 +7,24 @@
             <table class="table table-bordered table-hover">
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Actions</th>
+                    <th>Nomi</th>
+                    <th>Telefon raqami </th>
+                    <th>Manzili</th>
+                    <th>Viloyat</th>
+                    <th>Holati</th>
+                    <th>Sozlamalar</th>
                 </tr>
                 @forelse($items as $item)
                     <tr>
                         <td>{{ (($items->currentpage()-1)*$items->perpage()+($loop->index+1)) }}</td>
                         <td>{{$item->name}}</td>
+                        <td>{{$item->phone}}</td>
+                        <td>{{$item->address}}</td>
+                        <td>{{ $item->region->getTranslation('name', 'uz' )}}</td>
+                        <td>
+                            <p style="border-radius: 20px" class="btn btn-primary"> {{ $item->getStatusName()  }}</p>
+                        </td>
+
                         <td>
                             <a href="{{route('admin.'.$this->route.'.show', $item->id)}}" class="btn btn-primary"><i
                                     class="fas fa-eye"></i> Batafsil</a>

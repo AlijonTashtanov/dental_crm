@@ -44,6 +44,7 @@ class AbstractController extends Controller
      */
     public function store()
     {
+        return 'success';
         $item = $this->service->store(request()->all());
         return $this->sendResponse($item);
     }

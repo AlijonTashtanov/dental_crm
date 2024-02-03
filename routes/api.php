@@ -62,9 +62,11 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::delete('/category/delete/{id}', [ServiceCategoryController::class, 'categoryDestroy']);
 
         // service
-        Route::post('/service/create', [ServiceCategoryController::class, 'createCategory']);
-        Route::put('/service/update/{id}', [ServiceCategoryController::class, 'updateCategory']);
-        Route::delete('/service/delete/{id}', [ServiceCategoryController::class, 'destroyCategory']);
+        Route::post('/create', [ServiceCategoryController::class, 'createService']);
+        Route::put('/update/{id}', [ServiceCategoryController::class, 'updateService']);
+        Route::delete('/delete/{id}', [ServiceCategoryController::class, 'serviceDestroy']);
+
     });
+
 });
 

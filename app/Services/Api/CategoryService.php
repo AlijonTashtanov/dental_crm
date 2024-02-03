@@ -93,6 +93,8 @@ class CategoryService extends AbstractService
         ];
     }
 
+
+
     //</editor-fold>
 
     //<editor-fold desc="update category">
@@ -242,6 +244,9 @@ class CategoryService extends AbstractService
             $service = new $this->serviceModel;
             $service->polyclinic_id = Auth::user()->polyclinic_id;
             $service->name = $data['name'];
+            $service->category_id = $data['category_id'];
+            $service->material_price = $data['material_price'];
+            $service->technic_price = $data['technic_price'];
             $service->status = $data['status'];
 
             if ($service->save()) {
@@ -260,6 +265,101 @@ class CategoryService extends AbstractService
         return $this->sendResponse();
     }
 
+    public function updateService($id, array $data)
+    {
+        $item =$this->serviceModel::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('id', $id)
+            ->first();
+
+        if (!$item) {
+
+            return $this->sendResponse(false, 'Service not found', 403);
+
+        }
+        if ($item->status == Service::$status_deleted) {
+
+            return $this->sendResponse(false, 'Service deleted', 403);
+
+        }
+
+        $fields = $this->getServiceFields();
+
+        $rules = [];
+
+        foreach ($fields as $field) {
+
+            $rules[$field->getName()] = $field->getRules();
+        }
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+
+            foreach ($validator->errors()->getMessages() as $key => $value) {
+
+                $errors[$key] = $value[0];
+            }
+
+            return $this->sendResponse(false, 'Validation error', 403, $errors);
+        }
+
+        DB::beginTransaction();
+        try {
+
+            $item->polyclinic_id = Auth::user()->polyclinic_id;
+            $item->name = $data['name'];
+            $item->category_id = $data['category_id'];
+            $item->material_price = $data['material_price'];
+            $item->technic_price = $data['technic_price'];
+            $item->status = $data['status'];
+
+            if ($item->save()) {
+                DB::commit();
+            } else {
+                DB::rollback();
+
+                return $this->sendResponse(false, 'save service error', 500);
+            }
+
+        } catch (\Exception $ex) {
+
+            DB::rollback();
+
+            return $this->sendResponse(false, 'save service error', 500, $ex->getMessage());
+
+        }
+
+        return $this->sendResponse(true, 'success', 200);
+    }
+
+    public function serviceDestroy($id)
+    {
+        $item = $this->serviceModel::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('id', $id)
+            ->first();
+
+        if ($item) {
+
+            if ($item->status == Service::$status_deleted) {
+
+                return $this->sendResponse(false, 'Service already deleted', 403);
+            }
+
+            $item->status = Service::$status_deleted;
+            $item->deleted_at = date('Y-m-d H:i:s');
+            $item->deleted_by = Auth::user()->id;
+
+            if ($item->save()) {
+
+                return $this->sendResponse();
+            }
+        }
+
+        return $this->sendResponse(false, 'There was a problem deleting', 403);
+    }
+
     /**
      * @return array
      */
@@ -267,7 +367,9 @@ class CategoryService extends AbstractService
     {
         return [
             TextField::make('name')->setRules('required|min:3|max:255'),
-            TextField::make('color')->setRules('required|min:3|max:255'),
+            TextField::make('category_id')->setRules('required|numeric'),
+            TextField::make('material_price')->setRules('required|numeric'),
+            TextField::make('technic_price')->setRules('required|numeric'),
             TextField::make('status')->setRules('required|integer|between:0,1'),
         ];
     }

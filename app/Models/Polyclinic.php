@@ -10,9 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 class Polyclinic extends Model
 {
     use Status;
-    public $active = 2;
-    public $inactive = 0;
-    public $waiting = 1;
 
     /**
      * @var array
@@ -35,16 +32,7 @@ class Polyclinic extends Model
         return $this->belongsTo(Region::class);
     }
 
-    public function getStatus()
-    {
-        if ($this->status == $this->active){
-            return 'Faol';
-        }elseif ($this->status == $this->inactive){
-            return 'Nofaol';
-        }else{
-            return 'Kutish holatida';
-        }
-    }
+
 
 
 

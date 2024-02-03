@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\Service;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ServiceService extends AbstractService
 {
@@ -10,4 +13,8 @@ class ServiceService extends AbstractService
     {
         $this->model = $service;
     }
+
+
+
+
 }

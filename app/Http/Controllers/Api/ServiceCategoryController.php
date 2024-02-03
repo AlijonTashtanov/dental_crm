@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Services\Api\CategoryService;
+use App\Services\ServiceService;
 use Illuminate\Http\JsonResponse;
 
 class ServiceCategoryController extends AbstractController
@@ -53,5 +54,29 @@ class ServiceCategoryController extends AbstractController
 
         return $this->sendResponse($item);
     }
+
+
+    /**
+     * @return array|JsonResponse
+     */
+    public function updateService($id)
+    {
+        $item = $this->service->updateService($id, request()->all());
+
+        return $this->sendResponse($item);
+    }
+
+    /**
+     * @param $id
+     * @return array|JsonResponse
+     */
+    public function serviceDestroy($id)
+    {
+        $item = $this->service->serviceDestroy($id);
+
+        return $this->sendResponse($item);
+    }
+
+
 
 }

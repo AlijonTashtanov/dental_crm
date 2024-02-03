@@ -21,6 +21,27 @@
                     <th>ID</th>
                     <td>{{$response->id}}</td>
                 </tr>
+                <tr>
+                    <th>Nomi</th>
+                    <td>{{$response->name}}</td>
+                </tr>
+                <tr>
+                    <th>Telefon raqami </th>
+                    <td>{{$response->phone}}</td>
+                </tr>
+                <tr>
+                    <th>Manzili</th>
+                    <td>{{$response->address}}</td>
+                </tr>
+                <tr>
+                    <th>Viloyati</th>
+                    <td>{{ $response->region->getTranslation('name', 'uz' )}}</td>
+                </tr>
+                <tr>
+                    <th>Holati</th>
+                    <td>{{ $response->getStatus()  }}</td>
+                </tr>
+
             </table>
         </div>
     </div>
