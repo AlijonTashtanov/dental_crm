@@ -2,6 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,6 +19,9 @@ class BaseLivewire extends Component
     public $route = '';
     public $search = '';
 
+    /**
+     * @return Application|Factory|View
+     */
     public function render()
     {
 

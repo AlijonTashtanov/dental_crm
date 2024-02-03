@@ -9,6 +9,8 @@ class PolyclinicController extends AbstractController
     protected $dir = 'polyclinics';
     protected $serviceClass = PolyclinicService::class;
 
+    protected $permissionCheck = false;
+
     public function setConfig()
     {
         $this->config = [

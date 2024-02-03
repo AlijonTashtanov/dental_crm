@@ -15,16 +15,16 @@
                         <td>{{ (($items->currentpage()-1)*$items->perpage()+($loop->index+1)) }}</td>
                         <td>{{$item->name}}</td>
                         <td>
-                        <a href="{{route('admin.'.$this->route.'.show', $item->id)}}" class="btn btn-primary"><i
-                                                            class="fas fa-eye"></i> Show</a>
+                            <a href="{{route('admin.'.$this->route.'.show', $item->id)}}" class="btn btn-primary"><i
+                                    class="fas fa-eye"></i> Batafsil</a>
                             <a href="{{route('admin.'.$this->route.'.edit', $item->id)}}" class="btn btn-success"><i
-                                    class="fas fa-pencil-alt"></i> Edit</a>
+                                    class="fas fa-pencil-alt"></i> Tahrirlash</a>
                             <form action="{{route('admin.'.$this->route.'.destroy', $item->id)}}" method="POST"
                                   class="d-inline-block">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure?')">
-                                    <i class="fas fa-trash"></i> Delete
+                                    <i class="fas fa-trash"></i> O'chirish
                                 </button>
                             </form>
                         </td>

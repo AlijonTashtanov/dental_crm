@@ -28,6 +28,7 @@ Route::group(['prefix' => 'polyclinic'], function () {
     Route::post('/register', [PolyclinicController::class, 'register']);
     Route::post('/verify', [PolyclinicController::class, 'verify']);
     Route::post('/login', [PolyclinicController::class, 'login']);
+    Route::post('/doctor-login', [PolyclinicController::class, 'doctorLogin']);
 });
 
 Route::get('/regions', [PolyclinicController::class, 'regions']);

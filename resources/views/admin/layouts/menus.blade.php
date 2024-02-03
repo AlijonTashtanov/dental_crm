@@ -24,7 +24,7 @@
 </li>
 
 <li class="nav-item">
-    <a href="{{route('admin.clinics.index')}}" class="nav-link @if (request()->is('admin/clinics')) active @endif">
+    <a href="{{route('admin.polyclinics.index')}}" class="nav-link @if (request()->is('admin/polyclinics')) active @endif">
         <i class="nav-icon fas fa-hospital"></i>
         <p>
             Klinikalar

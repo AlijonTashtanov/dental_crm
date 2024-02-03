@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PolyclinicController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\TariffController;
 use App\Http\Livewire\Admin\UserProfile;
@@ -41,7 +42,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::resource('/tariffs', TariffController::class);
     Route::resource('/regions', RegionController::class);
-    Route::resource('/clinics', \App\Http\Controllers\ClinicController::class);
+    Route::resource('/polyclinics', PolyclinicController::class);
 
 //Profile
     Route::get('/profile', UserProfile::class)->name('profile');
