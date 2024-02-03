@@ -55,6 +55,9 @@ class PolyclinicController extends AbstractController
         return $this->sendResponse($item);
     }
 
+    /**
+     * @return array|JsonResponse
+     */
     public function doctorLogin()
     {
         $item = $this->service->doctorLogin(request()->all());
