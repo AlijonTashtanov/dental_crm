@@ -41,6 +41,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::resource('/tariffs', TariffController::class);
     Route::resource('/regions', RegionController::class);
+    Route::resource('/clinics', \App\Http\Controllers\ClinicController::class);
+
 //Profile
     Route::get('/profile', UserProfile::class)->name('profile');
     Route::post('/changeData', [AdminController::class, 'data'])->name('data');

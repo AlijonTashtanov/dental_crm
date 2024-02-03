@@ -42,6 +42,7 @@
                                         {{ __('Manage Team') }}
                                     </div>
 
+
                                     <!-- Team Settings -->
                                     <x-jet-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
                                         {{ __('Team Settings') }}
@@ -141,6 +142,8 @@
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
         </div>
+
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">

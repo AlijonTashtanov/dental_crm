@@ -8,7 +8,9 @@ use Illuminate\Support\Str;
 class AbstractService
 {
     //model
-    public function __construct(protected $model = null)
+    public function __construct(
+        protected $model = null,
+    )
     {
 
     }
@@ -19,6 +21,7 @@ class AbstractService
     {
         return $this->model::findOrFail($id);
     }
+
 
     public function create()
     {

@@ -32,6 +32,7 @@ Route::group(['prefix' => 'polyclinic'], function () {
 
 Route::get('/regions', [PolyclinicController::class, 'regions']);
 
+
 Route::middleware(['auth:api', 'api_admin'])->group(function () {
     Route::group(['prefix' => 'staff'], function () {
         Route::get('/index', [DoctorController::class, 'index']);

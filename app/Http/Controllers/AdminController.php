@@ -13,8 +13,9 @@ use App\Traits\Status;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-
+use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     /**
@@ -34,4 +35,5 @@ class AdminController extends Controller
         }
         return back();
     }
+
 }
