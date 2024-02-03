@@ -17,4 +17,9 @@ class Category extends Model
             ? static::query()
             : static::query()->where('name', 'like', '%' . $search . '%');
     }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
 }

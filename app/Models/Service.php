@@ -17,4 +17,9 @@ class Service extends Model
             ? static::query()
             : static::query()->where('name', 'like', '%' . $search . '%');
     }
+
+    public function polyclinic()
+    {
+        return $this->belongsTo(Polyclinic::class);
+    }
 }

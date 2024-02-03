@@ -3,6 +3,7 @@
 namespace App\Services\Api;
 
 use App\Fields\Store\TextField;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\UserResource;
 use App\Models\Category;
 use App\Models\Service;
@@ -24,11 +25,18 @@ class CategoryService extends AbstractService
     protected $serviceModel = Service::class;
 
     //<editor-fold desc="create category">
+    public function index()
+    {
+        $categories = $this->model::where('status','!=', Category::$status_deleted )->get();
+//        return CategoryResource::collection($categories);
+        return $this->sendResponse(true, 'get all categories', 200, CategoryResource::collection($categories) );
+    }
 
     /**
      * @param array $data
      * @return JsonResponse|mixed
      */
+
     public function createCategory(array $data)
     {
         $fields = $this->getFields();
@@ -245,8 +253,9 @@ class CategoryService extends AbstractService
             $service->polyclinic_id = Auth::user()->polyclinic_id;
             $service->name = $data['name'];
             $service->category_id = $data['category_id'];
-            $service->material_price = $data['material_price'];
-            $service->technic_price = $data['technic_price'];
+            $service->material_price = $data['material_price'] != null ? $data['material_price'] : 0;
+            $service->technic_price = $data['technic_price'] != null ? $data['technic_price'] : 0;
+            $service->price = $data['price'] != null ? $data['price'] : 0;
             $service->status = $data['status'];
 
             if ($service->save()) {
@@ -315,8 +324,9 @@ class CategoryService extends AbstractService
 
             $item->name = $data['name'];
             $item->category_id = $data['category_id'];
-            $item->material_price = $data['material_price'];
-            $item->technic_price = $data['technic_price'];
+            $item->price = $data['price'] != null ? $data['price'] : 0;
+            $item->material_price = $data['material_price'] != null ? $data['material_price'] : 0;
+            $item->technic_price = $data['technic_price'] != null ? $data['technic_price'] : 0;
             $item->status = $data['status'];
 
             if ($item->save()) {
@@ -376,9 +386,16 @@ class CategoryService extends AbstractService
     {
         return [
             TextField::make('name')->setRules('required|min:3|max:255'),
+<<<<<<< HEAD
             TextField::make('category_id')->setRules('required|integer'),
             TextField::make('material_price')->setRules('required|integer'),
             TextField::make('technic_price')->setRules('required|integer'),
+=======
+            TextField::make('category_id')->setRules('required|numeric'),
+            TextField::make('material_price')->setRules('integer|nullable'),
+            TextField::make('technic_price')->setRules('integer|nullable'),
+            TextField::make('price')->setRules('integer|nullable'),
+>>>>>>> 828fbf3 (bug fix and add column to sections user)
             TextField::make('status')->setRules('required|integer|between:0,1'),
         ];
     }

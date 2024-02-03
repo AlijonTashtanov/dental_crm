@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\CategoryResource;
 use App\Services\Api\CategoryService;
 use App\Services\ServiceService;
 use Illuminate\Http\JsonResponse;
@@ -14,9 +15,15 @@ class ServiceCategoryController extends AbstractController
     protected $service = CategoryService::class;
 
 
-    /**
-     * @return array|JsonResponse
-     */
+
+
+    public function index()
+    {
+        $item = $this->service->index();
+
+        return $this->sendResponse($item);
+    }
+
     public function createCategory()
     {
         $item = $this->service->createCategory(request()->all());
