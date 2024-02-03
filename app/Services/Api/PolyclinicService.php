@@ -443,6 +443,74 @@ class PolyclinicService extends AbstractService
         ];
     }
 
+    public function doctorLogin(array $data)
+    {
+        $fields = $this->getLoginFields();
+        $rules = [];
+
+        foreach ($fields as $field) {
+
+            $rules[$field->getName()] = $field->getRules();
+        }
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+
+            foreach ($validator->errors()->getMessages() as $key => $value) {
+
+                $errors[$key] = $value[0];
+            }
+
+            return [
+                'status' => false,
+                'message' => 'Validation error',
+                'statusCode' => 403,
+                'data' => $errors
+            ];
+        }
+
+        $data = [
+            'username' => $data['username'],
+            'password' => $data['password']
+        ];
+
+        if (Auth::attempt($data)) {
+            $user = UserResource::make(auth()->user());
+
+            if ($user->role != User::$role_doctor){
+                return [
+                    'status' => false,
+                    'message' => 'Username or Password is incorrect',
+                    'statusCode' => 401,
+                    'data' => null
+                ];
+            }
+
+            $token = $user->createToken('LaravelAuthApp')->accessToken;
+
+            return [
+                'status' => true,
+                'message' => 'success',
+                'statusCode' => 200,
+                'data' => [
+                    'user' => $user,
+                    'token' => $token
+                ]
+            ];
+        }
+
+        return [
+            'status' => false,
+            'message' => 'Username or Password is incorrect',
+            'statusCode' => 401,
+            'data' => null
+        ];
+
+    }
+
     /**
      * @return array
      */
