@@ -386,16 +386,10 @@ class CategoryService extends AbstractService
     {
         return [
             TextField::make('name')->setRules('required|min:3|max:255'),
-<<<<<<< HEAD
-            TextField::make('category_id')->setRules('required|integer'),
-            TextField::make('material_price')->setRules('required|integer'),
-            TextField::make('technic_price')->setRules('required|integer'),
-=======
             TextField::make('category_id')->setRules('required|numeric'),
             TextField::make('material_price')->setRules('integer|nullable'),
             TextField::make('technic_price')->setRules('integer|nullable'),
             TextField::make('price')->setRules('integer|nullable'),
->>>>>>> 828fbf3 (bug fix and add column to sections user)
             TextField::make('status')->setRules('required|integer|between:0,1'),
         ];
     }
