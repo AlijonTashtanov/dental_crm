@@ -67,4 +67,14 @@ class DoctorController extends AbstractController
         return $this->sendResponse($item);
     }
 
+    /**
+     * @return array|JsonResponse
+     */
+    public function search()
+    {
+        $item = $this->service->search(request()->all());
+
+        return $this->sendResponse($item);
+    }
+
 }

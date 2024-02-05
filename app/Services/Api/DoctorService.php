@@ -421,4 +421,9 @@ class DoctorService extends AbstractService
             ]
         ];
     }
+
+    public function search()
+    {
+
+    }
 }

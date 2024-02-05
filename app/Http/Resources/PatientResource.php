@@ -22,7 +22,7 @@ class PatientResource extends JsonResource
             'gender_name' => $this->getGender(),
             'born_date' => $this->born_date,
             'address' => $this->address,
-            'phone' => $this::phoneNumber($this->phone),
+            'phone' => phoneUzbFormat($this->phone),
             'job' => $this->job,
             'color' => $this->color,
         ];

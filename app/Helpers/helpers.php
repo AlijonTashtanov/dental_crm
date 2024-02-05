@@ -34,3 +34,22 @@ if (!function_exists('clearPhone')) {
         ]);
     }
 }
+
+// Telefon raqamni formatlab beradi
+// +998916700607 => +(998) 91 670 06 07
+if (!function_exists('phoneUzbFormat')) {
+    function phoneUzbFormat($phone): string
+    {
+        return "+(" . substr($phone, 0, 3) . ") " . substr($phone, 3, 2) . " " . substr($phone, 5, 3) . " " . substr($data, 8, 10);
+    }
+}
+// Summani formatlab beradigan funksiya
+
+if (!function_exists('decimal')) {
+
+    function decimal($summa, $decimal = 0, $unit = 'UZS'): string
+    {
+        return number_format($summa, $decimal, '.', ' ');
+    }
+}
+

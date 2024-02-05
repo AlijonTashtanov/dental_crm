@@ -8,6 +8,7 @@ class Patient extends Model
 {
 
     protected $guarded = ['id'];
+
     public static $male = 1;
     public static $woman = 0;
 
@@ -23,11 +24,6 @@ class Patient extends Model
         $gender = null;
         $gender = $this->gender_id == $this->male ? 'erkak' : 'ayol';
         return $gender;
-    }
-
-    public static function  phoneNumber($data) {
-
-        return "(".substr($data, 0, 3).") ".substr($data, 3, 2)." ".substr($data,5, 3)." ".substr($data,8, 10);
     }
 
 }
