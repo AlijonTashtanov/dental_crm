@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PatientService;
+use App\Services\Api\PatientService;
 
 class PatientController extends AbstractController
 {
