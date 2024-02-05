@@ -335,6 +335,73 @@ class PatientService extends AbstractService
 
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @param $data
+     * @return array
+     */
+    public function sorting($data)
+    {
+        $fields = $this->getSortingFields();
+
+        $rules = [];
+
+        foreach ($fields as $field) {
+
+            $rules[$field->getName()] = $field->getRules();
+        }
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+
+            foreach ($validator->errors()->getMessages() as $key => $value) {
+
+                $errors[$key] = $value[0];
+            }
+
+            return [
+                'status' => false,
+                'message' => 'Validation error',
+                'statusCode' => 403,
+                'data' => $errors
+            ];
+        }
+
+
+
+        $patients = $this->model::where('status', Status::$status_active)
+            ->orderBy($data['column'], $data['order'])
+            ->paginate(20);
+
+        $data =  [
+            'patients' => PatientResource::collection($patients),
+            'pagination' => [
+                'total' => $patients->total(),
+                'per_page' => $patients->perPage(),
+                'current_page' => $patients->currentPage(),
+                'last_page' => $patients->lastPage(),
+                'from' => $patients->firstItem(),
+                'to' => $patients->lastItem(),
+            ],
+        ];
+
+        return [
+            'status' => true,
+            'message' => 'success',
+            'statusCode' => 200,
+            'data' => $data
+        ];
+
+    }
+
+    /**
+     * @return array
+     */
+>>>>>>> origin/main
     public function deptors()
     {
 
