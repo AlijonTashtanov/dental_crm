@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('diseases', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('color')->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->bigInteger('polyclinic_id')->nullable();
             $table->timestamps();
         });
     }

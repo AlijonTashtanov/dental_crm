@@ -72,7 +72,7 @@ class AbstractController extends Controller
 
     /**
      * @param $data
-     * @return array|JsonResponse
+     * @return array|JsonResponse`
      */
     public function sendResponse($data)
     {

@@ -68,5 +68,12 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
 
     });
 
+    Route::group(['prefix' => 'patient'], function () {
+        Route::get('/index', [\App\Http\Controllers\Api\PatientController::class, 'index']);
+        Route::post('/create', [\App\Http\Controllers\Api\PatientController::class, 'create']);
+        Route::put('/update/{id}', [\App\Http\Controllers\Api\PatientController::class, 'update']);
+        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\PatientController::class, 'delete']);
+    });
+
 });
 
