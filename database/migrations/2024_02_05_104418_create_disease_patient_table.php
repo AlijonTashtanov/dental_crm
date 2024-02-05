@@ -22,7 +22,6 @@ return new class extends Migration
             $table->foreign('disease_id')->references('id')->on('diseases')->onDelete('cascade');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
 
-            $table->unique(['disease_id', 'patient_id']);
         });
     }
 

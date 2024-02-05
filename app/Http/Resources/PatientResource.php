@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Disease;
+use App\Models\DiseasePatient;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PatientResource extends JsonResource
@@ -26,6 +28,7 @@ class PatientResource extends JsonResource
             'job' => $this->job,
             'color' => $this->color,
             'balance' => decimal($this->balance),
+            'diseases' => DiseaseResource::collection($this->diseases)
         ];
     }
 }

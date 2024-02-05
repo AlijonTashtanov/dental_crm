@@ -106,9 +106,11 @@ class PatientService extends AbstractService
             $patient->balance = $data['balance'];
             $patient->status = Status::$status_active;
 
+
             if ($patient->save()) {
                 DB::commit();
-                $data['friend_desiases'] != [] ?  $patient->diseases()->attach( $data['friend_desiases']) : '';
+
+                $data['friend_desiases'] != [] ?  $patient->diseases()->attach( json_decode($data['friend_desiases'])) : '';
             } else {
                 DB::rollback();
                 return [
@@ -201,7 +203,7 @@ class PatientService extends AbstractService
         $data = $validator->validated();
         DB::beginTransaction();
         try {
-            $patient = new $this->model;
+            $patient = $item;
             $patient->first_name = $data['first_name'];
             $patient->last_name = $data['last_name'];
             $patient->polyclinic_id = auth()->user()->polyclinic_id;
@@ -214,12 +216,11 @@ class PatientService extends AbstractService
             $patient->balance = $data['balance'];
             $patient->status = Status::$status_active;
 
+
             if ($patient->save()) {
-
                 DB::commit();
-
-                $patient->diseases()->dettach( $this->putArray($patient->diseases, $data['friend_desiases'])['new'] );
-                $patient->diseases()->attach( $this->putArray($patient->diseases, $data['friend_desiases'])['old'] );
+                $patient->diseases()->detach();
+                $patient->diseases()->attach( json_decode($data['friend_desiases']) );
 
             } else {
                 DB::rollback();

@@ -186,7 +186,7 @@ class DiseaseService extends \App\Services\Api\AbstractService
         $data = $validator->validated();
         DB::beginTransaction();
         try {
-            $patient = new $this->model;
+            $patient = $item;
             $patient->name = $data['name'];
             $patient->color = $data['color'];
             $patient->polyclinic_id =  auth()->user()->polyclinic_id;
