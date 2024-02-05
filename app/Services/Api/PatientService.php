@@ -15,8 +15,15 @@ use Illuminate\Support\Facades\Validator;
 
 class PatientService extends AbstractService
 {
+    /**
+     * @var string
+     */
     protected $model = Patient::class;
-    protected $patient;
+
+
+    /**
+     * @return array
+     */
     public function index()
     {
 
@@ -43,6 +50,11 @@ class PatientService extends AbstractService
             'data' => $data
         ];
     }
+
+    /**
+     * @param array $data
+     * @return array
+     */
     public function store(array $data)
     {
 
@@ -76,12 +88,14 @@ class PatientService extends AbstractService
 
 
         $data = $validator->validated();
+
         DB::beginTransaction();
+
         try {
             $patient = new $this->model;
             $patient->first_name = $data['first_name'];
             $patient->last_name = $data['last_name'];
-            $patient->polyclinic_id =  auth()->user()->polyclinic_id;
+            $patient->polyclinic_id = auth()->user()->polyclinic_id;
             $patient->gender_id = $data['gender_id'];
             $patient->first_name = $data['first_name'];
             $patient->born_date = $data['born_date'];
@@ -121,6 +135,11 @@ class PatientService extends AbstractService
         ];
     }
 
+    /**
+     * @param $id
+     * @param $data
+     * @return array
+     */
     public function update($id, $data)
     {
 
@@ -182,7 +201,7 @@ class PatientService extends AbstractService
             $patient = new $this->model;
             $patient->first_name = $data['first_name'];
             $patient->last_name = $data['last_name'];
-            $patient->polyclinic_id =  auth()->user()->polyclinic_id;
+            $patient->polyclinic_id = auth()->user()->polyclinic_id;
             $patient->gender_id = $data['gender_id'];
             $patient->first_name = $data['first_name'];
             $patient->born_date = $data['born_date'];
@@ -222,6 +241,10 @@ class PatientService extends AbstractService
         ];
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function delete($id)
     {
         $item = $this->model::where('polyclinic_id', auth()->user()->polyclinic_id)
@@ -263,7 +286,9 @@ class PatientService extends AbstractService
     }
 
 
-
+    /**
+     * @return array
+     */
     public function getFields()
     {
         return [

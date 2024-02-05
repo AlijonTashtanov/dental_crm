@@ -12,8 +12,14 @@ use Illuminate\Support\Facades\Validator;
 
 class DiseaseService extends \App\Services\Api\AbstractService
 {
+    /**
+     * @var string
+     */
     protected $model = Disease::class;
-    protected $disease;
+
+    /**
+     * @return array
+     */
     public function index()
     {
 
@@ -40,6 +46,11 @@ class DiseaseService extends \App\Services\Api\AbstractService
             'data' => $data
         ];
     }
+
+    /**
+     * @param array $data
+     * @return array
+     */
     public function store(array $data)
     {
 
@@ -112,6 +123,11 @@ class DiseaseService extends \App\Services\Api\AbstractService
         ];
     }
 
+    /**
+     * @param $id
+     * @param $data
+     * @return array
+     */
     public function update($id, $data)
     {
 
@@ -206,6 +222,10 @@ class DiseaseService extends \App\Services\Api\AbstractService
         ];
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function delete($id)
     {
         $item = $this->model::where('polyclinic_id', auth()->user()->polyclinic_id)
@@ -247,7 +267,9 @@ class DiseaseService extends \App\Services\Api\AbstractService
     }
 
 
-
+    /**
+     * @return array
+     */
     public function getFields()
     {
         return [
