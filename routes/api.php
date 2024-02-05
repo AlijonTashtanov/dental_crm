@@ -75,5 +75,12 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::delete('/delete/{id}', [\App\Http\Controllers\Api\PatientController::class, 'delete']);
     });
 
+    Route::group(['prefix' => 'disease'], function () {
+        Route::get('/index', [\App\Http\Controllers\Api\DiseaseController::class, 'index']);
+        Route::post('/create', [\App\Http\Controllers\Api\DiseaseController::class, 'create']);
+        Route::put('/update/{id}', [\App\Http\Controllers\Api\DiseaseController::class, 'update']);
+        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\DiseaseController::class, 'delete']);
+    });
+
 });
 

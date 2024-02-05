@@ -45,6 +45,7 @@ class PatientService extends AbstractService
     }
     public function store(array $data)
     {
+
         $fields = $this->getFields();
 
         $rules = [];
@@ -119,6 +120,149 @@ class PatientService extends AbstractService
             'data' => null
         ];
     }
+
+    public function update($id, $data)
+    {
+
+        $item = $this->model::where('polyclinic_id', auth()->user()->polyclinic_id)
+            ->where('id', $id)
+            ->first();
+
+        if (!$item) {
+            return [
+                'status' => false,
+                'message' => "Staff not found",
+                'statusCode' => 403,
+                'data' => null
+            ];
+
+        }
+        if ($item->status == User::$status_deleted) {
+
+            return [
+                'status' => false,
+                'message' => "User deleted",
+                'statusCode' => 403,
+                'data' => null
+            ];
+        }
+
+        $fields = $this->getFields();
+
+        $rules = [];
+
+        foreach ($fields as $field) {
+
+            $rules[$field->getName()] = $field->getRules();
+        }
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+
+            foreach ($validator->errors()->getMessages() as $key => $value) {
+
+                $errors[$key] = $value[0];
+            }
+
+            return [
+                'status' => false,
+                'message' => 'Validation error',
+                'statusCode' => 403,
+                'data' => $errors
+            ];
+        }
+
+
+        $data = $validator->validated();
+        DB::beginTransaction();
+        try {
+            $patient = new $this->model;
+            $patient->first_name = $data['first_name'];
+            $patient->last_name = $data['last_name'];
+            $patient->polyclinic_id =  auth()->user()->polyclinic_id;
+            $patient->gender_id = $data['gender_id'];
+            $patient->first_name = $data['first_name'];
+            $patient->born_date = $data['born_date'];
+            $patient->address = $data['address'];
+            $patient->phone = $data['phone'];
+            $patient->job = $data['job'];
+            $patient->status = Status::$status_active;
+
+            if ($patient->save()) {
+                DB::commit();
+            } else {
+                DB::rollback();
+                return [
+                    'status' => false,
+                    'message' => 'update user error',
+                    'statusCode' => 500,
+                    'data' => null
+                ];
+            }
+
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return [
+                'status' => false,
+                'message' => 'Server error',
+                'statusCode' => 500,
+                'data' => $ex->getMessage()
+            ];
+        }
+
+
+        return [
+            'status' => true,
+            'message' => 'success',
+            'statusCode' => 200,
+            'data' => null
+        ];
+    }
+
+    public function delete($id)
+    {
+        $item = $this->model::where('polyclinic_id', auth()->user()->polyclinic_id)
+            ->where('id', $id)
+            ->first();
+
+        if ($item) {
+
+            if ($item->status == User::$status_deleted) {
+
+                return [
+                    'status' => false,
+                    'message' => 'Staff deleted',
+                    'statusCode' => 403,
+                    'data' => null
+                ];
+            }
+
+            $item->status = User::$status_deleted;
+            $item->deleted_at = date('Y-m-d H:i:s');
+            $item->deleted_by = auth()->user()->id;
+
+            if ($item->save()) {
+                return [
+                    'status' => true,
+                    'message' => 'success',
+                    'statusCode' => 200,
+                    'data' => PatientResource::make($item)
+                ];
+            }
+        }
+
+        return [
+            'status' => false,
+            'message' => 'There was a problem deleting',
+            'statusCode' => 403,
+            'data' => null
+        ];
+    }
+
+
 
     public function getFields()
     {

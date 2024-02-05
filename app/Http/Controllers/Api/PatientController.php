@@ -25,7 +25,13 @@ class PatientController extends AbstractController
 
     public function update($id)
     {
-        $patient = $this->service->store($id,request()->all());
+        $patient = $this->service->update($id,request()->all());
+        return $this->sendResponse($patient);
+    }
+
+    public function delete($id)
+    {
+        $patient = $this->service->delete($id);
         return $this->sendResponse($patient);
     }
 
