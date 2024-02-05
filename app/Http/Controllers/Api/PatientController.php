@@ -46,10 +46,20 @@ class PatientController extends AbstractController
      * @param $id
      * @return array|JsonResponse
      */
+
     public function delete($id)
     {
         $patient = $this->service->delete($id);
         return $this->sendResponse($patient);
+    }
+
+    /**
+     * @return array|JsonResponse
+     */
+    public function search()
+    {
+        $patients = $this->service->search(request()->all());
+        return $this->sendResponse($patients);
     }
 
 

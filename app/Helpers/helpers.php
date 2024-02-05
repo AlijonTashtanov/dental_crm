@@ -40,7 +40,7 @@ if (!function_exists('clearPhone')) {
 if (!function_exists('phoneUzbFormat')) {
     function phoneUzbFormat($phone): string
     {
-        return "+(" . substr($phone, 0, 3) . ") " . substr($phone, 3, 2) . " " . substr($phone, 5, 3) . " " . substr($data, 8, 10);
+        return "+(" . substr($phone, 0, 3) . ") " . substr($phone, 3, 2) . " " . substr($phone, 5, 3) . " " . substr($phone, 8, 10);
     }
 }
 // Summani formatlab beradigan funksiya

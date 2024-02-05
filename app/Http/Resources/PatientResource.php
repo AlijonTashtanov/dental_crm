@@ -25,6 +25,7 @@ class PatientResource extends JsonResource
             'phone' => phoneUzbFormat($this->phone),
             'job' => $this->job,
             'color' => $this->color,
+            'balance' => decimal($this->balance),
         ];
     }
 }

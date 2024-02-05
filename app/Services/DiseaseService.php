@@ -274,7 +274,7 @@ class DiseaseService extends \App\Services\Api\AbstractService
     {
         return [
             TextField::make('name')->setRules('required|min:3|max:255'),
-            TextField::make('color')->setRules('required|min:3|max:255'),
+            TextField::make('color')->setRules('nullable|min:3|max:255'),
 
         ];
     }

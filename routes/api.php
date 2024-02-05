@@ -73,6 +73,7 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::post('/create', [\App\Http\Controllers\Api\PatientController::class, 'create']);
         Route::put('/update/{id}', [\App\Http\Controllers\Api\PatientController::class, 'update']);
         Route::delete('/delete/{id}', [\App\Http\Controllers\Api\PatientController::class, 'delete']);
+        Route::post('/search', [\App\Http\Controllers\Api\PatientController::class, 'search']);
     });
 
     Route::group(['prefix' => 'disease'], function () {

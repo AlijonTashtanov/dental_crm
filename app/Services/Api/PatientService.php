@@ -102,6 +102,7 @@ class PatientService extends AbstractService
             $patient->address = $data['address'];
             $patient->phone = $data['phone'];
             $patient->job = $data['job'];
+            $patient->balance = $data['balance'];
             $patient->status = Status::$status_active;
 
             if ($patient->save()) {
@@ -208,6 +209,7 @@ class PatientService extends AbstractService
             $patient->address = $data['address'];
             $patient->phone = $data['phone'];
             $patient->job = $data['job'];
+            $patient->balance = $data['balance'];
             $patient->status = Status::$status_active;
 
             if ($patient->save()) {
@@ -285,6 +287,55 @@ class PatientService extends AbstractService
         ];
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
+    public function search($data)
+    {
+        $fields = $this->getSearchFields();
+
+        $rules = [];
+
+        foreach ($fields as $field) {
+
+            $rules[$field->getName()] = $field->getRules();
+        }
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+
+            foreach ($validator->errors()->getMessages() as $key => $value) {
+
+                $errors[$key] = $value[0];
+            }
+
+            return [
+                'status' => false,
+                'message' => 'Validation error',
+                'statusCode' => 403,
+                'data' => $errors
+            ];
+        }
+
+        $items = $this->model::searchPatient($data['search']);
+        $data = [
+            'patients' => PatientResource::collection($items),
+            'pagination' => [
+                'total' => $items->total(),
+                'per_page' => $items->perPage(),
+                'current_page' => $items->currentPage(),
+                'last_page' => $items->lastPage(),
+                'from' => $items->firstItem(),
+                'to' => $items->lastItem(),
+            ],
+        ];
+        return $data;
+    }
+
 
     /**
      * @return array
@@ -293,13 +344,19 @@ class PatientService extends AbstractService
     {
         return [
             TextField::make('first_name')->setRules('required|min:3|max:255'),
-            TextField::make('last_name')->setRules('required|min:3|max:255'),
-            TextField::make('born_date')->setRules('required|min:3|max:255'),
-            TextField::make('address')->setRules('required|min:3|max:255'),
-            TextField::make('job')->setRules('required|min:3|max:255'),
-            TextField::make('phone')->setRules('required|numeric'),
-            TextField::make('balance')->setRules('required|integer'),
+            TextField::make('last_name')->setRules('nullable|min:3|max:255'),
+            TextField::make('born_date')->setRules('nullable|min:3|max:255'),
+            TextField::make('address')->setRules('nullable|min:3|max:255'),
+            TextField::make('job')->setRules('nullable|min:3|max:255'),
+            TextField::make('phone')->setRules('nullable|numeric'),
+            TextField::make('balance')->setRules('nullable|integer'),
             TextField::make('gender_id')->setRules('required|integer'),
+        ];}
+
+    public function getSearchFields()
+    {
+        return [
+            TextField::make('search')->setRules('required|min:2|max:255'),
         ];
     }
 
