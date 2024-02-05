@@ -15,8 +15,9 @@ class ServiceCategoryController extends AbstractController
     protected $service = CategoryService::class;
 
 
-
-
+    /**
+     * @return array|JsonResponse
+     */
     public function index()
     {
         $item = $this->service->index();
@@ -24,6 +25,9 @@ class ServiceCategoryController extends AbstractController
         return $this->sendResponse($item);
     }
 
+    /**
+     * @return array|JsonResponse
+     */
     public function createCategory()
     {
         $item = $this->service->createCategory(request()->all());

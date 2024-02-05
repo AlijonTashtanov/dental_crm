@@ -27,9 +27,9 @@ class CategoryService extends AbstractService
     //<editor-fold desc="create category">
     public function index()
     {
-        $categories = $this->model::where('status','!=', Category::$status_deleted )->get();
-//        return CategoryResource::collection($categories);
-        return $this->sendResponse(true, 'get all categories', 200, CategoryResource::collection($categories) );
+        $categories = $this->model::where('status', '!=', Category::$status_deleted)->get();
+
+        return $this->sendResponse(true, 'get all categories', 200, CategoryResource::collection($categories));
     }
 
     /**
