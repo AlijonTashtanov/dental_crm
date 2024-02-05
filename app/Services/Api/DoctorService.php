@@ -407,7 +407,7 @@ class DoctorService extends AbstractService
      */
     public function checkSortOrder()
     {
-        $staffCount = User::where('polyclinic_id', Auth::user()->polyclinic_id)
+        $staffCount = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
             ->where('status', '!=', User::$status_deleted)
             ->where('role', '!=', User::$role_admin)
             ->count();
@@ -429,13 +429,16 @@ class DoctorService extends AbstractService
     public function search(array $data)
     {
         $key = $data['key'] ?? '';
+        $column = $data['column'] ?? 'sort_order';
+        $sort = $data['sort'] ?? 'asc';
 
-        $staffs = User::where(function ($query) {
-            empty($this->search) ? $query : $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('username', 'like', '%' . $this->search . '%')
-                ->orWhere('position', 'like', '%' . $this->search . '%');
+        $staffs = $this->model::where(function ($query) use ($key) {
+            empty($key) ? $query : $query->where('name', 'like', '%' . $key . '%')
+                ->orWhere('username', 'like', '%' . $key . '%')
+                ->orWhere('position', 'like', '%' . $key . '%');
         })
-            ->orderBy('sort_order', 'asc')
+            ->where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->orderBy($column, $sort)
             ->paginate(20);
 
         $data = [
