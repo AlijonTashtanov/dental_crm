@@ -294,46 +294,25 @@ class PatientService extends AbstractService
      */
     public function search($data)
     {
-        $fields = $this->getSearchFields();
 
-        $rules = [];
+        $search = $data['search'];
 
-        foreach ($fields as $field) {
-
-            $rules[$field->getName()] = $field->getRules();
-        }
-
-        $validator = Validator::make($data, $rules);
-
-        if ($validator->fails()) {
-
-            $errors = [];
-
-            foreach ($validator->errors()->getMessages() as $key => $value) {
-
-                $errors[$key] = $value[0];
-            }
-
-            return [
-                'status' => false,
-                'message' => 'Validation error',
-                'statusCode' => 403,
-                'data' => $errors
-            ];
-        }
-
-        $data = $data['search'];
         if ($data == ''){
-            return $this->index();
+            $patients = $this->model::orderBy($data['column'], $data['order'])
+                ->where('status', Status::$status_active)
+                ->paginate(20);
+        }else{
+            $patients = $this->model::where('first_name', 'like', "%$search%")
+                ->orWhere('last_name', 'like', "%$search%")
+                ->orWhere('address', 'like', "%$search%")
+                ->orWhere('job', 'like', "%$search%")
+                ->orWhere('phone', 'like', "%$search%")
+                ->orWhere('balance', 'like', "%$search%")
+                ->orderBy($data['column'], $data['order'])
+                ->where('status', Status::$status_active)
+                ->paginate(20);
         }
-        $patients = $this->model::where('first_name', 'like', "%$data%")
-            ->orWhere('last_name', 'like', "%$data%")
-            ->orWhere('address', 'like', "%$data%")
-            ->orWhere('job', 'like', "%$data%")
-            ->orWhere('phone', 'like', "%$data%")
-            ->orWhere('balance', 'like', "%$data%")
-            ->where('status', Status::$status_active)
-            ->paginate(20);
+
 
         $data =  [
             'patients' => PatientResource::collection($patients),
@@ -356,66 +335,6 @@ class PatientService extends AbstractService
 
     }
 
-    /**
-     * @param $data
-     * @return array
-     */
-    public function sorting($data)
-    {
-        $fields = $this->getSortingFields();
-
-        $rules = [];
-
-        foreach ($fields as $field) {
-
-            $rules[$field->getName()] = $field->getRules();
-        }
-
-        $validator = Validator::make($data, $rules);
-
-        if ($validator->fails()) {
-
-            $errors = [];
-
-            foreach ($validator->errors()->getMessages() as $key => $value) {
-
-                $errors[$key] = $value[0];
-            }
-
-            return [
-                'status' => false,
-                'message' => 'Validation error',
-                'statusCode' => 403,
-                'data' => $errors
-            ];
-        }
-
-
-
-        $patients = $this->model::where('status', Status::$status_active)
-            ->orderBy($data['column'], $data['order'])
-            ->paginate(20);
-
-        $data =  [
-            'patients' => PatientResource::collection($patients),
-            'pagination' => [
-                'total' => $patients->total(),
-                'per_page' => $patients->perPage(),
-                'current_page' => $patients->currentPage(),
-                'last_page' => $patients->lastPage(),
-                'from' => $patients->firstItem(),
-                'to' => $patients->lastItem(),
-            ],
-        ];
-
-        return [
-            'status' => true,
-            'message' => 'success',
-            'statusCode' => 200,
-            'data' => $data
-        ];
-
-    }
     public function deptors()
     {
 
@@ -462,25 +381,6 @@ class PatientService extends AbstractService
             TextField::make('gender_id')->setRules('required|integer'),
         ];}
 
-    /**
-     * @return array
-     */
-    public function getSearchFields()
-    {
-        return [
-            TextField::make('search')->setRules('nullable|max:255'),
-        ];
-    }
 
-    /**
-     * @return array
-     */
-    public function getSortingFields()
-    {
-        return [
-            TextField::make('column')->setRules('required|max:255'),
-            TextField::make('order')->setRules('required|max:255'),
-        ];
-    }
 
 }
