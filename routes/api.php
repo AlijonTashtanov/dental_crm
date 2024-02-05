@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\DiseaseController;
+use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PolyclinicController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\ReceptionController;
@@ -40,6 +42,8 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::get('/show/{id}', [DoctorController::class, 'show']);
         Route::delete('/delete/{id}', [DoctorController::class, 'destroy']);
         Route::get('/checkSortOrder', [DoctorController::class, 'checkSortOrder']);
+        Route::get('/search', [DoctorController::class, 'search']);
+
         // Doctor
         Route::post('/doctor/create', [DoctorController::class, 'create']);
         Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
@@ -69,18 +73,18 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
     });
 
     Route::group(['prefix' => 'patient'], function () {
-        Route::get('/index', [\App\Http\Controllers\Api\PatientController::class, 'index']);
-        Route::post('/create', [\App\Http\Controllers\Api\PatientController::class, 'create']);
-        Route::put('/update/{id}', [\App\Http\Controllers\Api\PatientController::class, 'update']);
-        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\PatientController::class, 'delete']);
+        Route::get('/index', [PatientController::class, 'index']);
+        Route::post('/create', [PatientController::class, 'create']);
+        Route::put('/update/{id}', [PatientController::class, 'update']);
+        Route::delete('/delete/{id}', [PatientController::class, 'delete']);
         Route::post('/search', [\App\Http\Controllers\Api\PatientController::class, 'search']);
     });
 
     Route::group(['prefix' => 'disease'], function () {
-        Route::get('/index', [\App\Http\Controllers\Api\DiseaseController::class, 'index']);
-        Route::post('/create', [\App\Http\Controllers\Api\DiseaseController::class, 'create']);
-        Route::put('/update/{id}', [\App\Http\Controllers\Api\DiseaseController::class, 'update']);
-        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\DiseaseController::class, 'delete']);
+        Route::get('/index', [DiseaseController::class, 'index']);
+        Route::post('/create', [DiseaseController::class, 'create']);
+        Route::put('/update/{id}', [DiseaseController::class, 'update']);
+        Route::delete('/delete/{id}', [DiseaseController::class, 'delete']);
     });
 
 });

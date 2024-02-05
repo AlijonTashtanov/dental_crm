@@ -289,7 +289,7 @@ class PatientService extends AbstractService
 
     /**
      * @param $data
-     * @return void
+     * @return array|void
      */
     public function search($data)
     {
@@ -353,6 +353,9 @@ class PatientService extends AbstractService
             TextField::make('gender_id')->setRules('required|integer'),
         ];}
 
+    /**
+     * @return array
+     */
     public function getSearchFields()
     {
         return [

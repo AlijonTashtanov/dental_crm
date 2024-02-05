@@ -43,6 +43,7 @@ if (!function_exists('phoneUzbFormat')) {
         return "+(" . substr($phone, 0, 3) . ") " . substr($phone, 3, 2) . " " . substr($phone, 5, 3) . " " . substr($phone, 8, 10);
     }
 }
+
 // Summani formatlab beradigan funksiya
 
 if (!function_exists('decimal')) {

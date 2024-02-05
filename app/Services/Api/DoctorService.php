@@ -422,8 +422,39 @@ class DoctorService extends AbstractService
         ];
     }
 
-    public function search()
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function search(array $data)
     {
+        $key = $data['key'] ?? '';
 
+        $staffs = User::where(function ($query) {
+            empty($this->search) ? $query : $query->where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('username', 'like', '%' . $this->search . '%')
+                ->orWhere('position', 'like', '%' . $this->search . '%');
+        })
+            ->orderBy('sort_order', 'asc')
+            ->paginate(20);
+
+        $data = [
+            'staffs' => UserResource::collection($staffs),
+            'pagination' => [
+                'total' => $staffs->total(),
+                'per_page' => $staffs->perPage(),
+                'current_page' => $staffs->currentPage(),
+                'last_page' => $staffs->lastPage(),
+                'from' => $staffs->firstItem(),
+                'to' => $staffs->lastItem(),
+            ],
+        ];
+
+        return [
+            'status' => true,
+            'message' => 'Success',
+            'statusCode' => 200,
+            'data' => $data
+        ];
     }
 }
