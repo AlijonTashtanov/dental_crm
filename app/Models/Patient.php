@@ -28,18 +28,7 @@ class Patient extends Model
             : static::query()->where('name', 'like', '%' . $search . '%');
     }
 
-    public static function searchPatient($search)
-    {
-        $patients = self::where('first_name', 'like', "%$search%")
-            ->orWhere('last_name', 'like', "%$search%")
-            ->orWhere('address', 'like', "%$search%")
-            ->orWhere('job', 'like', "%$search%")
-            ->orWhere('phone', 'like', "%$search%")
-            ->orWhere('balance', 'like', "%$search%")
-            ->where('status', Status::$status_active)
-            ->paginate(20);
-        return $patients;
-    }
+
 
     /**
      * @return string[]

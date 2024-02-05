@@ -62,6 +62,25 @@ class PatientController extends AbstractController
         return $this->sendResponse($patients);
     }
 
+    /**
+     * @return array|JsonResponse
+     */
+
+    public function sorting()
+    {
+        $patients = $this->service->sorting(request()->all());
+        return $this->sendResponse($patients);
+    }
+
+    /**
+     * @return array|JsonResponse
+     */
+    public function deptors()
+    {
+        $patients = $this->service->deptors();
+        return $this->sendResponse($patients);
+    }
+
 
 
 }

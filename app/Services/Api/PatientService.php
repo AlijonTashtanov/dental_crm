@@ -11,6 +11,7 @@ use App\Traits\Status;
 use Illuminate\Support\Facades\DB;
 use phpseclib3\File\ASN1\Maps\OtherPrimeInfo;
 use Illuminate\Support\Facades\Validator;
+use function PHPUnit\Framework\returnArgument;
 
 
 class PatientService extends AbstractService
@@ -321,19 +322,127 @@ class PatientService extends AbstractService
             ];
         }
 
-        $items = $this->model::searchPatient($data['search']);
-        $data = [
-            'patients' => PatientResource::collection($items),
+        $data = $data['search'];
+        if ($data == ''){
+            return $this->index();
+        }
+        $patients = $this->model::where('first_name', 'like', "%$data%")
+            ->orWhere('last_name', 'like', "%$data%")
+            ->orWhere('address', 'like', "%$data%")
+            ->orWhere('job', 'like', "%$data%")
+            ->orWhere('phone', 'like', "%$data%")
+            ->orWhere('balance', 'like', "%$data%")
+            ->where('status', Status::$status_active)
+            ->paginate(20);
+
+        $data =  [
+            'patients' => PatientResource::collection($patients),
             'pagination' => [
-                'total' => $items->total(),
-                'per_page' => $items->perPage(),
-                'current_page' => $items->currentPage(),
-                'last_page' => $items->lastPage(),
-                'from' => $items->firstItem(),
-                'to' => $items->lastItem(),
+                'total' => $patients->total(),
+                'per_page' => $patients->perPage(),
+                'current_page' => $patients->currentPage(),
+                'last_page' => $patients->lastPage(),
+                'from' => $patients->firstItem(),
+                'to' => $patients->lastItem(),
             ],
         ];
-        return $data;
+
+        return [
+                'status' => true,
+                'message' => 'success',
+                'statusCode' => 200,
+                'data' => $data
+            ];
+
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    public function sorting($data)
+    {
+        $fields = $this->getSortingFields();
+
+        $rules = [];
+
+        foreach ($fields as $field) {
+
+            $rules[$field->getName()] = $field->getRules();
+        }
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+
+            $errors = [];
+
+            foreach ($validator->errors()->getMessages() as $key => $value) {
+
+                $errors[$key] = $value[0];
+            }
+
+            return [
+                'status' => false,
+                'message' => 'Validation error',
+                'statusCode' => 403,
+                'data' => $errors
+            ];
+        }
+
+
+
+        $patients = $this->model::where('status', Status::$status_active)
+            ->orderBy($data['column'], $data['order'])
+            ->paginate(20);
+
+        $data =  [
+            'patients' => PatientResource::collection($patients),
+            'pagination' => [
+                'total' => $patients->total(),
+                'per_page' => $patients->perPage(),
+                'current_page' => $patients->currentPage(),
+                'last_page' => $patients->lastPage(),
+                'from' => $patients->firstItem(),
+                'to' => $patients->lastItem(),
+            ],
+        ];
+
+        return [
+            'status' => true,
+            'message' => 'success',
+            'statusCode' => 200,
+            'data' => $data
+        ];
+
+    }
+    public function deptors()
+    {
+
+        $patients = $this->model::where('status', Status::$status_active)
+            ->where('balance','<', 0)
+            ->orderBy('balance','desc')
+            ->paginate(20);
+
+        $data =  [
+            'patients' => PatientResource::collection($patients),
+            'pagination' => [
+                'total' => $patients->total(),
+                'per_page' => $patients->perPage(),
+                'current_page' => $patients->currentPage(),
+                'last_page' => $patients->lastPage(),
+                'from' => $patients->firstItem(),
+                'to' => $patients->lastItem(),
+            ],
+        ];
+
+        return [
+            'status' => true,
+            'message' => 'success',
+            'statusCode' => 200,
+            'data' => $data
+        ];
+
     }
 
 
@@ -359,7 +468,18 @@ class PatientService extends AbstractService
     public function getSearchFields()
     {
         return [
-            TextField::make('search')->setRules('required|min:2|max:255'),
+            TextField::make('search')->setRules('nullable|max:255'),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getSortingFields()
+    {
+        return [
+            TextField::make('column')->setRules('required|max:255'),
+            TextField::make('order')->setRules('required|max:255'),
         ];
     }
 
