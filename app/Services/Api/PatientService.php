@@ -108,6 +108,7 @@ class PatientService extends AbstractService
 
             if ($patient->save()) {
                 DB::commit();
+                $data['friend_desiases'] != [] ?  $patient->diseases()->attach( $data['friend_desiases']) : '';
             } else {
                 DB::rollback();
                 return [
@@ -214,7 +215,12 @@ class PatientService extends AbstractService
             $patient->status = Status::$status_active;
 
             if ($patient->save()) {
+
                 DB::commit();
+
+                $patient->diseases()->dettach( $this->putArray($patient->diseases, $data['friend_desiases'])['new'] );
+                $patient->diseases()->attach( $this->putArray($patient->diseases, $data['friend_desiases'])['old'] );
+
             } else {
                 DB::rollback();
                 return [
@@ -241,6 +247,18 @@ class PatientService extends AbstractService
             'message' => 'success',
             'statusCode' => 200,
             'data' => null
+        ];
+    }
+
+    function putArray($array1, $array2)
+    {
+        // Ikkita arrayni solish uchun array_intersect va array_diff funksiyalarni ishlatamiz
+        $old = array_intersect($array1, $array2); // Ikki arrayning bir xil elementlari
+        $new = array_diff($array1, $array2);     // Birinchi arrayda bor, ikkinchisida yo'q elementlar
+
+        return [
+            'new' => $new,
+            'old' => $old,
         ];
     }
 
@@ -335,73 +353,10 @@ class PatientService extends AbstractService
 
     }
 
-<<<<<<< HEAD
-=======
-    /**
-     * @param $data
-     * @return array
-     */
-    public function sorting($data)
-    {
-        $fields = $this->getSortingFields();
-
-        $rules = [];
-
-        foreach ($fields as $field) {
-
-            $rules[$field->getName()] = $field->getRules();
-        }
-
-        $validator = Validator::make($data, $rules);
-
-        if ($validator->fails()) {
-
-            $errors = [];
-
-            foreach ($validator->errors()->getMessages() as $key => $value) {
-
-                $errors[$key] = $value[0];
-            }
-
-            return [
-                'status' => false,
-                'message' => 'Validation error',
-                'statusCode' => 403,
-                'data' => $errors
-            ];
-        }
-
-
-
-        $patients = $this->model::where('status', Status::$status_active)
-            ->orderBy($data['column'], $data['order'])
-            ->paginate(20);
-
-        $data =  [
-            'patients' => PatientResource::collection($patients),
-            'pagination' => [
-                'total' => $patients->total(),
-                'per_page' => $patients->perPage(),
-                'current_page' => $patients->currentPage(),
-                'last_page' => $patients->lastPage(),
-                'from' => $patients->firstItem(),
-                'to' => $patients->lastItem(),
-            ],
-        ];
-
-        return [
-            'status' => true,
-            'message' => 'success',
-            'statusCode' => 200,
-            'data' => $data
-        ];
-
-    }
-
     /**
      * @return array
      */
->>>>>>> origin/main
+
     public function deptors()
     {
 
@@ -446,6 +401,8 @@ class PatientService extends AbstractService
             TextField::make('phone')->setRules('nullable|numeric'),
             TextField::make('balance')->setRules('nullable|integer'),
             TextField::make('gender_id')->setRules('required|integer'),
+            TextField::make('friend_desiases')->setRules('required'),
+
         ];}
 
 

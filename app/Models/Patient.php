@@ -49,5 +49,10 @@ class Patient extends Model
         return Arr::get(self::genders(), $this->gender_id);
     }
 
+    public function diseases()
+    {
+        return $this->belongsToMany(Disease::class);
+    }
+
 
 }

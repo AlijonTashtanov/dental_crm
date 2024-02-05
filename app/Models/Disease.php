@@ -14,4 +14,9 @@ class Disease extends Model
             ? static::query()
             : static::query()->where('name', 'like', '%' . $search . '%');
     }
+
+    public function patients()
+    {
+        return $this->belongsToMany(Patient::class);
+    }
 }
