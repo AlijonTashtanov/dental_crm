@@ -416,6 +416,10 @@ class PatientService extends AbstractService
         ];
 
     }
+
+    /**
+     * @return array
+     */
     public function deptors()
     {
 

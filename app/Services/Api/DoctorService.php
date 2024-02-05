@@ -111,7 +111,7 @@ class DoctorService extends AbstractService
             $user->color = $data['color'];
             $user->status = User::$status_active;
             $user->sort_order = $data['sort_order'];
-//            $user->polyclinic_id = Auth::user()->polyclinic_id;
+            $user->polyclinic_id = Auth::user()->polyclinic_id;
 //            $user->status = User::$status_active;
 
             if ($user->save()) {
@@ -438,6 +438,7 @@ class DoctorService extends AbstractService
                 ->orWhere('position', 'like', '%' . $key . '%');
         })
             ->where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('status', '!=', User::$status_deleted)
             ->orderBy($column, $sort)
             ->paginate(20);
 
