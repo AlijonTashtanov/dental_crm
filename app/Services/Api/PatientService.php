@@ -110,7 +110,7 @@ class PatientService extends AbstractService
             if ($patient->save()) {
                 DB::commit();
 
-                $data['friend_desiases'] != [] ? $patient->diseases()->attach(json_decode($data['friend_desiases'])) : '';
+                $data['select_diseases'] != [] ? $patient->diseases()->attach(json_decode($data['select_diseases'])) : '';
             } else {
                 DB::rollback();
                 return [
@@ -220,7 +220,7 @@ class PatientService extends AbstractService
             if ($patient->save()) {
                 DB::commit();
                 $patient->diseases()->detach();
-                $patient->diseases()->attach(json_decode($data['friend_desiases']));
+                $patient->diseases()->attach(json_decode($data['select_diseases']));
 
             } else {
                 DB::rollback();
@@ -314,7 +314,10 @@ class PatientService extends AbstractService
     public function search($data)
     {
 
-        $search = $data['search'];
+
+        $search = $data['search'] ?? '';
+        $column = $data['column'] ?? 'id';
+        $order = $data['order'] ?? 'asc';
 
         if ($data == '') {
             $patients = $this->model::orderBy($data['column'], $data['order'])
@@ -327,7 +330,7 @@ class PatientService extends AbstractService
                 ->orWhere('job', 'like', "%$search%")
                 ->orWhere('phone', 'like', "%$search%")
                 ->orWhere('balance', 'like', "%$search%")
-                ->orderBy($data['column'], $data['order'])
+                ->orderBy($column, $order)
                 ->where('status', Status::$status_active)
                 ->paginate(20);
         }

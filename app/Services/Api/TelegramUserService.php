@@ -251,7 +251,10 @@ class TelegramUserService extends AbstractService
     public function search($data)
     {
 
-        $search = $data['search'];
+
+        $search = $data['search'] ?? '';
+        $column = $data['column'] ?? 'id';
+        $order = $data['order'] ?? 'asc';
 
         if ($data == ''){
             $items = $this->model::orderBy($data['column'], $data['order'])
@@ -259,7 +262,7 @@ class TelegramUserService extends AbstractService
         }else{
             $items = $this->model::where('name', 'like', "%$search%")
                 ->orWhere('telegram_id', 'like', "%$search%")
-                ->orderBy($data['column'], $data['order'])
+                ->orderBy($column, $order)
                 ->paginate(20);
         }
 
