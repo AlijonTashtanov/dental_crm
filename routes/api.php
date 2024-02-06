@@ -93,6 +93,14 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::get('/search', [\App\Http\Controllers\Api\TelegramUserController::class, 'search']);
     });
 
+    // Payment types
+    Route::group(['prefix' => 'payment-type'], function () {
+        Route::get('/index', [\App\Http\Controllers\Api\PaymentTypeController::class, 'index']);
+        Route::post('/create', [\App\Http\Controllers\Api\PaymentTypeController::class, 'create']);
+        Route::put('/update/{id}', [\App\Http\Controllers\Api\PaymentTypeController::class, 'update']);
+        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\PaymentTypeController::class, 'delete']);
+    });
+
 });
 
 Route::middleware(['auth:api', 'api_reception'])->group(function () {
