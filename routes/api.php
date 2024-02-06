@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\DiseaseController;
+use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PolyclinicController;
-use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\ReceptionController;
 use App\Http\Controllers\Api\ServiceCategoryController;
 use App\Http\Controllers\Api\TechnicController;
@@ -89,11 +89,12 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
     });
 
     // Telegram
-    Route::group(['prefix' => 'telegram'], function () {
-        Route::get('/index', [DiseaseController::class, 'index']);
-        Route::post('/create', [DiseaseController::class, 'create']);
-        Route::put('/update/{id}', [DiseaseController::class, 'update']);
-        Route::delete('/delete/{id}', [DiseaseController::class, 'delete']);
+    Route::group(['prefix' => 'users-telegram'], function () {
+        Route::get('/index', [\App\Http\Controllers\Api\TelegramUserController::class, 'index']);
+        Route::post('/create', [\App\Http\Controllers\Api\TelegramUserController::class, 'create']);
+        Route::put('/update/{id}', [\App\Http\Controllers\Api\TelegramUserController::class, 'update']);
+        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\TelegramUserController::class, 'delete']);
+        Route::get('/search', [\App\Http\Controllers\Api\TelegramUserController::class, 'search']);
     });
 
 });

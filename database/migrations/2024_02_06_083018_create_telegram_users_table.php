@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('telegram_users', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('telegram_id')->nullable();
+            $table->softDeletes(); // This adds the 'deleted_at' column
             $table->timestamps();
         });
     }
