@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\Api\ApiAdminMiddleware;
 use App\Http\Middleware\LocaleMiddleware;
+use App\Http\Middleware\ReceptionMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
@@ -74,5 +75,7 @@ class Kernel extends HttpKernel
         'permission' => PermissionMiddleware::class,
         'role_or_permission' => RoleOrPermissionMiddleware::class,
         'api_admin' => ApiAdminMiddleware::class,
+        'api_reception' => ReceptionMiddleware::class
+
     ];
 }

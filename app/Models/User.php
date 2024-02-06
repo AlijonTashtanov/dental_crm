@@ -135,4 +135,9 @@ class User extends Authenticatable
     {
         return $this->role == self::$role_admin;
     }
+
+    public function isApiReception()
+    {
+        return $this->role == self::$role_reception;
+    }
 }
