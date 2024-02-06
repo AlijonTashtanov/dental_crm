@@ -6,8 +6,14 @@ use App\Services\Api\TelegramUserService;
 
 class TelegramUserController extends AbstractController
 {
+    /**
+     * @var string
+     */
     protected $service = TelegramUserService::class;
 
+    /**
+     * @return array|\Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $item = $this->service->index();
@@ -43,6 +49,9 @@ class TelegramUserController extends AbstractController
         return $this->sendResponse($item);
     }
 
+    /**
+     * @return array|\Illuminate\Http\JsonResponse
+     */
     public function search()
     {
         $item = $this->service->search(request()->all());

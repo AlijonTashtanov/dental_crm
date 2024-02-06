@@ -19,6 +19,9 @@ class TelegramUserService extends AbstractService
      */
     protected $model = TelegramUser::class;
 
+    /**
+     * @return array
+     */
     public function index()
     {
 
