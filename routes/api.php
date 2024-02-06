@@ -95,7 +95,7 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
 
 });
 
-Route::middleware(['auth:api', 'api_reception', 'api_admin' ])->group(function () {
+Route::middleware(['auth:api', 'api_reception'])->group(function () {
 
     Route::group(['prefix' => 'staff'], function () {
 

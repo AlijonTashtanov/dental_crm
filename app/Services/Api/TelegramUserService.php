@@ -3,11 +3,8 @@
 namespace App\Services\Api;
 
 use App\Fields\Store\TextField;
-use App\Http\Resources\DiseaseResource;
 use App\Http\Resources\TelegramUserResource;
 use App\Models\TelegramUser;
-use App\Models\User;
-use App\Traits\Status;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 

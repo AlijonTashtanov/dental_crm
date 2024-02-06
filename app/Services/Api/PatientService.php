@@ -110,7 +110,7 @@ class PatientService extends AbstractService
             if ($patient->save()) {
                 DB::commit();
 
-                $data['friend_desiases'] != [] ?  $patient->diseases()->attach( json_decode($data['friend_desiases'])) : '';
+                $data['friend_desiases'] != [] ? $patient->diseases()->attach(json_decode($data['friend_desiases'])) : '';
             } else {
                 DB::rollback();
                 return [
@@ -220,7 +220,7 @@ class PatientService extends AbstractService
             if ($patient->save()) {
                 DB::commit();
                 $patient->diseases()->detach();
-                $patient->diseases()->attach( json_decode($data['friend_desiases']) );
+                $patient->diseases()->attach(json_decode($data['friend_desiases']));
 
             } else {
                 DB::rollback();
@@ -316,11 +316,11 @@ class PatientService extends AbstractService
 
         $search = $data['search'];
 
-        if ($data == ''){
+        if ($data == '') {
             $patients = $this->model::orderBy($data['column'], $data['order'])
                 ->where('status', Status::$status_active)
                 ->paginate(20);
-        }else{
+        } else {
             $patients = $this->model::where('first_name', 'like', "%$search%")
                 ->orWhere('last_name', 'like', "%$search%")
                 ->orWhere('address', 'like', "%$search%")
@@ -333,7 +333,7 @@ class PatientService extends AbstractService
         }
 
 
-        $data =  [
+        $data = [
             'patients' => PatientResource::collection($patients),
             'pagination' => [
                 'total' => $patients->total(),
@@ -346,11 +346,11 @@ class PatientService extends AbstractService
         ];
 
         return [
-                'status' => true,
-                'message' => 'success',
-                'statusCode' => 200,
-                'data' => $data
-            ];
+            'status' => true,
+            'message' => 'success',
+            'statusCode' => 200,
+            'data' => $data
+        ];
 
     }
 
@@ -362,11 +362,11 @@ class PatientService extends AbstractService
     {
 
         $patients = $this->model::where('status', Status::$status_active)
-            ->where('balance','<', 0)
-            ->orderBy('balance','desc')
+            ->where('balance', '<', 0)
+            ->orderBy('balance', 'desc')
             ->paginate(20);
 
-        $data =  [
+        $data = [
             'patients' => PatientResource::collection($patients),
             'pagination' => [
                 'total' => $patients->total(),
@@ -402,10 +402,9 @@ class PatientService extends AbstractService
             TextField::make('phone')->setRules('nullable|numeric'),
             TextField::make('balance')->setRules('nullable|integer'),
             TextField::make('gender_id')->setRules('required|integer'),
-            TextField::make('friend_desiases')->setRules('required'),
+            TextField::make('select_diseases')->setRules('required'),
 
-        ];}
-
-
+        ];
+    }
 
 }

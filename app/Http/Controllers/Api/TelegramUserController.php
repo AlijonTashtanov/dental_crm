@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Services\Api\TelegramUserService;
+use Illuminate\Http\JsonResponse;
 
 class TelegramUserController extends AbstractController
 {
@@ -12,7 +13,7 @@ class TelegramUserController extends AbstractController
     protected $service = TelegramUserService::class;
 
     /**
-     * @return array|\Illuminate\Http\JsonResponse
+     * @return array|JsonResponse
      */
     public function index()
     {
@@ -50,7 +51,7 @@ class TelegramUserController extends AbstractController
     }
 
     /**
-     * @return array|\Illuminate\Http\JsonResponse
+     * @return array|JsonResponse
      */
     public function search()
     {
