@@ -88,5 +88,13 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::delete('/delete/{id}', [DiseaseController::class, 'delete']);
     });
 
+    // Telegram
+    Route::group(['prefix' => 'telegram'], function () {
+        Route::get('/index', [DiseaseController::class, 'index']);
+        Route::post('/create', [DiseaseController::class, 'create']);
+        Route::put('/update/{id}', [DiseaseController::class, 'update']);
+        Route::delete('/delete/{id}', [DiseaseController::class, 'delete']);
+    });
+
 });
 
