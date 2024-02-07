@@ -70,6 +70,7 @@ class CategoryService extends AbstractService
             $category = new $this->model;
             $category->polyclinic_id = Auth::user()->polyclinic_id;
             $category->name = $data['name'];
+            $category->color = $data['color'];
             $category->status = $data['status'];
 
             if ($category->save()) {

@@ -23,6 +23,7 @@ class TariffController extends AbstractController
                 'name_en' => 'required|string|max:2056',
                 'price' => 'required|integer|min:0',
                 'duration_number' => 'required|integer|min:0',
+                'max_doctor_count' => 'required|integer|min:1',
                 'duration_text' => 'required|string|max:255',
                 'is_free' => '',
                 'status' => ''

@@ -38,6 +38,10 @@
                     <td>{{$response->getDurationName()}}</td>
                 </tr>
                 <tr>
+                    <th>Ruxsat berilgan doktorlar soni</th>
+                    <td>{{$response->max_doctor_count}}</td>
+                </tr>
+                <tr>
                     <th>Holati</th>
                     <td>{!! $response->getStatusBadgeName() !!}</td>
                 </tr>
