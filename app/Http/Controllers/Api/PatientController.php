@@ -68,9 +68,9 @@ class PatientController extends AbstractController
     /**
      * @return array|JsonResponse
      */
-    public function deptors()
+    public function debtors()
     {
-        $patients = $this->service->deptors();
+        $patients = $this->service->debtors();
         return $this->sendResponse($patients);
     }
 

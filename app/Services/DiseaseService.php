@@ -7,6 +7,7 @@ use App\Http\Resources\DiseaseResource;
 use App\Models\Disease;
 use App\Models\User;
 use App\Traits\Status;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -89,7 +90,7 @@ class DiseaseService extends \App\Services\Api\AbstractService
             $patient = new $this->model;
             $patient->name = $data['name'];
             $patient->color = $data['color'];
-            $patient->polyclinic_id =  auth()->user()->polyclinic_id;
+            $patient->polyclinic_id = auth()->user()->polyclinic_id;
             $patient->status = Status::$status_active;
 
             if ($patient->save()) {
@@ -189,7 +190,6 @@ class DiseaseService extends \App\Services\Api\AbstractService
             $patient = $item;
             $patient->name = $data['name'];
             $patient->color = $data['color'];
-            $patient->polyclinic_id =  auth()->user()->polyclinic_id;
             $patient->status = Status::$status_active;
             if ($patient->save()) {
                 DB::commit();
@@ -276,6 +276,42 @@ class DiseaseService extends \App\Services\Api\AbstractService
             TextField::make('name')->setRules('required|min:3|max:255'),
             TextField::make('color')->setRules('nullable|min:3|max:255'),
 
+        ];
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function search(array $data)
+    {
+        $key = $data['key'] ?? '';
+        $column = $data['column'] ?? 'id';
+        $sort = $data['sort'] ?? 'asc';
+
+        $staffs = $this->model::where('name', 'like', '%' . $key . '%')
+            ->where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('status', '!=', User::$status_deleted)
+            ->orderBy($column, $sort)
+            ->paginate(20);
+
+        $data = [
+            'staffs' => DiseaseResource::collection($staffs),
+            'pagination' => [
+                'total' => $staffs->total(),
+                'per_page' => $staffs->perPage(),
+                'current_page' => $staffs->currentPage(),
+                'last_page' => $staffs->lastPage(),
+                'from' => $staffs->firstItem(),
+                'to' => $staffs->lastItem(),
+            ],
+        ];
+
+        return [
+            'status' => true,
+            'message' => 'Success',
+            'statusCode' => 200,
+            'data' => $data
         ];
     }
 

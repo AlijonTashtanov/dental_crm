@@ -36,7 +36,7 @@ class DiseaseController extends AbstractController
      */
     public function update($id)
     {
-        $item = $this->service->update($id,request()->all());
+        $item = $this->service->update($id, request()->all());
         return $this->sendResponse($item);
     }
 
@@ -49,4 +49,14 @@ class DiseaseController extends AbstractController
         $item = $this->service->delete($id);
         return $this->sendResponse($item);
     }
+
+    /**
+     * @return array|JsonResponse
+     */
+    public function search()
+    {
+        $patients = $this->service->search(request()->all());
+        return $this->sendResponse($patients);
+    }
+
 }

@@ -3,10 +3,12 @@
 use App\Http\Controllers\Api\DiseaseController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\PaymentTypeController;
 use App\Http\Controllers\Api\PolyclinicController;
 use App\Http\Controllers\Api\ReceptionController;
 use App\Http\Controllers\Api\ServiceCategoryController;
 use App\Http\Controllers\Api\TechnicController;
+use App\Http\Controllers\Api\TelegramUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -73,12 +75,13 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::post('/create', [PatientController::class, 'create']);
         Route::put('/update/{id}', [PatientController::class, 'update']);
         Route::delete('/delete/{id}', [PatientController::class, 'delete']);
-        Route::post('/search', [\App\Http\Controllers\Api\PatientController::class, 'search']);
-        Route::get('/deptors', [\App\Http\Controllers\Api\PatientController::class, 'deptors']);
+        Route::post('/search', [PatientController::class, 'search']);
+        Route::get('/debtors', [PatientController::class, 'debtors']);
     });
 
     Route::group(['prefix' => 'disease'], function () {
         Route::get('/index', [DiseaseController::class, 'index']);
+        Route::get('/search', [DiseaseController::class, 'search']);
         Route::post('/create', [DiseaseController::class, 'create']);
         Route::put('/update/{id}', [DiseaseController::class, 'update']);
         Route::delete('/delete/{id}', [DiseaseController::class, 'delete']);
@@ -86,19 +89,19 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
 
     // Telegram
     Route::group(['prefix' => 'users-telegram'], function () {
-        Route::get('/index', [\App\Http\Controllers\Api\TelegramUserController::class, 'index']);
-        Route::post('/create', [\App\Http\Controllers\Api\TelegramUserController::class, 'create']);
-        Route::put('/update/{id}', [\App\Http\Controllers\Api\TelegramUserController::class, 'update']);
-        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\TelegramUserController::class, 'delete']);
-        Route::get('/search', [\App\Http\Controllers\Api\TelegramUserController::class, 'search']);
+        Route::get('/index', [TelegramUserController::class, 'index']);
+        Route::post('/create', [TelegramUserController::class, 'create']);
+        Route::put('/update/{id}', [TelegramUserController::class, 'update']);
+        Route::delete('/delete/{id}', [TelegramUserController::class, 'delete']);
+        Route::get('/search', [TelegramUserController::class, 'search']);
     });
 
     // Payment types
     Route::group(['prefix' => 'payment-type'], function () {
-        Route::get('/index', [\App\Http\Controllers\Api\PaymentTypeController::class, 'index']);
-        Route::post('/create', [\App\Http\Controllers\Api\PaymentTypeController::class, 'create']);
-        Route::put('/update/{id}', [\App\Http\Controllers\Api\PaymentTypeController::class, 'update']);
-        Route::delete('/delete/{id}', [\App\Http\Controllers\Api\PaymentTypeController::class, 'delete']);
+        Route::get('/index', [PaymentTypeController::class, 'index']);
+        Route::post('/create', [PaymentTypeController::class, 'create']);
+        Route::put('/update/{id}', [PaymentTypeController::class, 'update']);
+        Route::delete('/delete/{id}', [PaymentTypeController::class, 'delete']);
     });
 
 });

@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Patient;
 use App\Models\User;
 use App\Traits\Status;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use phpseclib3\File\ASN1\Maps\OtherPrimeInfo;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +29,8 @@ class PatientService extends AbstractService
     public function index()
     {
 
-        $allPatients = $this->model::where('status', Status::$status_active)
+        $allPatients = $this->model::where('polyclinic_id', auth()->user()->polyclinic_id)
+            ->where('status', Status::$status_active)
             ->orderBy('created_at', 'asc')
             ->paginate(20);
 
@@ -108,9 +110,8 @@ class PatientService extends AbstractService
 
 
             if ($patient->save()) {
-                DB::commit();
-
                 $data['select_diseases'] != [] ? $patient->diseases()->attach(json_decode($data['select_diseases'])) : '';
+                DB::commit();
             } else {
                 DB::rollback();
                 return [
@@ -206,9 +207,7 @@ class PatientService extends AbstractService
             $patient = $item;
             $patient->first_name = $data['first_name'];
             $patient->last_name = $data['last_name'];
-            $patient->polyclinic_id = auth()->user()->polyclinic_id;
             $patient->gender_id = $data['gender_id'];
-            $patient->first_name = $data['first_name'];
             $patient->born_date = $data['born_date'];
             $patient->address = $data['address'];
             $patient->phone = $data['phone'];
@@ -248,18 +247,6 @@ class PatientService extends AbstractService
             'message' => 'success',
             'statusCode' => 200,
             'data' => null
-        ];
-    }
-
-    function putArray($array1, $array2)
-    {
-        // Ikkita arrayni solish uchun array_intersect va array_diff funksiyalarni ishlatamiz
-        $old = array_intersect($array1, $array2); // Ikki arrayning bir xil elementlari
-        $new = array_diff($array1, $array2);     // Birinchi arrayda bor, ikkinchisida yo'q elementlar
-
-        return [
-            'new' => $new,
-            'old' => $old,
         ];
     }
 
@@ -311,27 +298,31 @@ class PatientService extends AbstractService
      * @param $data
      * @return array|void
      */
-    public function search($data)
+    public function search(array $data)
     {
 
 
         $search = $data['search'] ?? '';
         $column = $data['column'] ?? 'id';
-        $order = $data['order'] ?? 'asc';
+        $order = $data['sort_order'] ?? 'asc';
 
         if ($data == '') {
-            $patients = $this->model::orderBy($data['column'], $data['order'])
+            $patients = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
                 ->where('status', Status::$status_active)
+                ->orderBy($data['column'], $data['order'])
                 ->paginate(20);
         } else {
-            $patients = $this->model::where('first_name', 'like', "%$search%")
-                ->orWhere('last_name', 'like', "%$search%")
-                ->orWhere('address', 'like', "%$search%")
-                ->orWhere('job', 'like', "%$search%")
-                ->orWhere('phone', 'like', "%$search%")
-                ->orWhere('balance', 'like', "%$search%")
-                ->orderBy($column, $order)
+            $patients = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+                ->where(function ($query) use ($search) {
+                    empty($key) ? $query : $query->where('first_name', 'like', '%' . $search . '%')
+                        ->orWhere('last_name', 'like', '%' . $search . '%')
+                        ->orWhere('address', 'like', '%' . $search . '%')
+                        ->orWhere('job', 'like', '%' . $search . '%')
+                        ->orWhere('phone', 'like', '%' . $search . '%')
+                        ->orWhere('balance', 'like', '%' . $search . '%');
+                })
                 ->where('status', Status::$status_active)
+                ->orderBy($column, $order)
                 ->paginate(20);
         }
 
@@ -361,7 +352,7 @@ class PatientService extends AbstractService
      * @return array
      */
 
-    public function deptors()
+    public function debtors()
     {
 
         $patients = $this->model::where('status', Status::$status_active)
@@ -405,7 +396,7 @@ class PatientService extends AbstractService
             TextField::make('phone')->setRules('nullable|numeric'),
             TextField::make('balance')->setRules('nullable|integer'),
             TextField::make('gender_id')->setRules('required|integer'),
-            TextField::make('select_diseases')->setRules('required'),
+            TextField::make('select_diseases')->setRules('nullable'),
 
         ];
     }
