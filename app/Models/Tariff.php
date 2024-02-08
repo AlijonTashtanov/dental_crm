@@ -39,13 +39,8 @@ class Tariff extends Model
     {
         parent::boot();
 
-        self::creating(function (Tariff $model) {
-            $model->fee_for_one_doctor = $model->price / $model->max_doctor_count;
-            dd($model->fee_for_one_doctor);
-        });
-
-        self::updating(function(Tariff $model){
-            $model->fee_for_one_doctor = $model->price / $model->max_doctor_count;
+        self::saving(function (Tariff $model) {
+            $model->fee_for_one_doctor = intval($model->max_doctor_count > 0 ? $model->price / $model->max_doctor_count : 0);
         });
 
     }

@@ -9,6 +9,7 @@
                     <th>ID</th>
                     <th>Obuna nomi</th>
                     <th>Davomiyligi</th>
+                    <th>Narxi</th>
                     <th>Bepulmi?</th>
                     <th>Ruxsat berilgan doktorlar soni</th>
                     <th>Holati</th>
@@ -19,14 +20,15 @@
                         <td>{{ (($items->currentpage()-1)*$items->perpage()+($loop->index+1)) }}</td>
                         <td>{{$item->getTranslation('name','uz')}}</td>
                         <td>{{$item->getDurationName()}}</td>
+                        <td>{{decimal($item->price)}}</td>
                         <td>{!! $item->getIsFreeBadgeText()!!}</td>
                         <td>{{ $item->max_doctor_count }}</td>
                         <td>{!! $item->getStatusBadgeName() !!}</td>
                         <td>
                             <a href="{{route('admin.'.$this->route.'.show', $item->id)}}" class="btn btn-primary"><i
-                                    class="fas fa-eye"></i> Batafsil</a>
+                                        class="fas fa-eye"></i> Batafsil</a>
                             <a href="{{route('admin.'.$this->route.'.edit', $item->id)}}" class="btn btn-success"><i
-                                    class="fas fa-pencil-alt"></i> Tahrirlash</a>
+                                        class="fas fa-pencil-alt"></i> Tahrirlash</a>
                             <form action="{{route('admin.'.$this->route.'.destroy', $item->id)}}" method="POST"
                                   class="d-inline-block">
                                 @csrf
@@ -39,7 +41,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7">No data found :(</td>
+                        <td colspan="8">No data found :(</td>
                     </tr>
                 @endforelse
             </table>

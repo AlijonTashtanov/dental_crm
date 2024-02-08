@@ -42,6 +42,10 @@
                     <td>{{$response->max_doctor_count}}</td>
                 </tr>
                 <tr>
+                    <th>Narxi</th>
+                    <td>{{decimal($response->price)}}</td>
+                </tr>
+                <tr>
                     <th>Holati</th>
                     <td>{!! $response->getStatusBadgeName() !!}</td>
                 </tr>
