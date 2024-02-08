@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class DiseasePatient extends Model
 {
     protected $table = 'disease_patient';
+
     protected $fillable = [];
 
     public static function search($search)

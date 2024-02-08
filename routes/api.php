@@ -75,7 +75,7 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::post('/create', [PatientController::class, 'create']);
         Route::put('/update/{id}', [PatientController::class, 'update']);
         Route::delete('/delete/{id}', [PatientController::class, 'delete']);
-        Route::post('/search', [PatientController::class, 'search']);
+        Route::get('/search', [PatientController::class, 'search']);
         Route::get('/debtors', [PatientController::class, 'debtors']);
     });
 
@@ -108,11 +108,13 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
 
 Route::middleware(['auth:api', 'api_reception'])->group(function () {
 
-    Route::group(['prefix' => 'staff'], function () {
-
-        // Doctor
-        Route::post('/doctor/create', [DoctorController::class, 'create']);
-        Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
-
+    // Patient
+    Route::group(['prefix' => 'patient'], function () {
+        Route::get('/index', [PatientController::class, 'index']);
+        Route::post('/create', [PatientController::class, 'create']);
+        Route::put('/update/{id}', [PatientController::class, 'update']);
+        Route::get('/search', [PatientController::class, 'search']);
+        Route::get('/debtors', [PatientController::class, 'debtors']);
     });
+
 });

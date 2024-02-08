@@ -105,7 +105,6 @@ class PatientService extends AbstractService
             $patient->address = $data['address'];
             $patient->phone = $data['phone'];
             $patient->job = $data['job'];
-            $patient->balance = $data['balance'];
             $patient->status = Status::$status_active;
 
 
@@ -156,7 +155,7 @@ class PatientService extends AbstractService
         if (!$item) {
             return [
                 'status' => false,
-                'message' => "Staff not found",
+                'message' => "Patient not found",
                 'statusCode' => 403,
                 'data' => null
             ];
@@ -166,7 +165,7 @@ class PatientService extends AbstractService
 
             return [
                 'status' => false,
-                'message' => "User deleted",
+                'message' => "Patient deleted",
                 'statusCode' => 403,
                 'data' => null
             ];
@@ -212,7 +211,6 @@ class PatientService extends AbstractService
             $patient->address = $data['address'];
             $patient->phone = $data['phone'];
             $patient->job = $data['job'];
-            $patient->balance = $data['balance'];
             $patient->status = Status::$status_active;
 
 
@@ -300,31 +298,21 @@ class PatientService extends AbstractService
      */
     public function search(array $data)
     {
-
-
-        $search = $data['search'] ?? '';
+        $key = $data['key'] ?? '';
         $column = $data['column'] ?? 'id';
-        $order = $data['sort_order'] ?? 'asc';
+        $order = $data['sort'] ?? 'asc';
 
-        if ($data == '') {
-            $patients = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
-                ->where('status', Status::$status_active)
-                ->orderBy($data['column'], $data['order'])
-                ->paginate(20);
-        } else {
-            $patients = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
-                ->where(function ($query) use ($search) {
-                    empty($key) ? $query : $query->where('first_name', 'like', '%' . $search . '%')
-                        ->orWhere('last_name', 'like', '%' . $search . '%')
-                        ->orWhere('address', 'like', '%' . $search . '%')
-                        ->orWhere('job', 'like', '%' . $search . '%')
-                        ->orWhere('phone', 'like', '%' . $search . '%')
-                        ->orWhere('balance', 'like', '%' . $search . '%');
-                })
-                ->where('status', Status::$status_active)
-                ->orderBy($column, $order)
-                ->paginate(20);
-        }
+        $patients = $this->model::where(function ($query) use ($key) {
+            empty($key) ? $query : $query->where('first_name', 'like', '%' . $key . '%')
+                ->orWhere('last_name', 'like', '%' . $key . '%')
+                ->orWhere('address', 'like', '%' . $key . '%')
+                ->orWhere('phone', 'like', '%' . $key . '%')
+                ->orWhere('balance', 'like', '%' . $key . '%');
+        })
+            ->where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('status', Status::$status_active)
+            ->orderBy($column, $order)
+            ->paginate(20);
 
 
         $data = [
@@ -394,7 +382,6 @@ class PatientService extends AbstractService
             TextField::make('address')->setRules('nullable|min:3|max:255'),
             TextField::make('job')->setRules('nullable|min:3|max:255'),
             TextField::make('phone')->setRules('nullable|numeric'),
-            TextField::make('balance')->setRules('nullable|integer'),
             TextField::make('gender_id')->setRules('required|integer'),
             TextField::make('select_diseases')->setRules('nullable'),
 

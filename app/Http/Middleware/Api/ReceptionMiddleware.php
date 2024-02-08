@@ -19,7 +19,7 @@ class ReceptionMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->user()->isApiReception() || !auth()->user()->isApiAdmin()) {
+        if (!auth()->user()->isApiReception() && !auth()->user()->isApiAdmin()) {
 
             return response()->json([
                 'status' => false,

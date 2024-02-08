@@ -5,6 +5,7 @@ namespace App\Services\Api;
 use App\Fields\Store\TextField;
 use App\Http\Resources\TelegramUserResource;
 use App\Models\TelegramUser;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,7 +23,8 @@ class TelegramUserService extends AbstractService
     public function index()
     {
 
-        $items = $this->model::orderBy('created_at', 'asc')
+        $items = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->orderBy('created_at', 'asc')
             ->paginate(20);
 
         $data = [
@@ -87,6 +89,7 @@ class TelegramUserService extends AbstractService
             $item = new $this->model;
             $item->name = $data['name'];
             $item->telegram_id = $data['telegram_id'];
+            $item->polyclinic_id = Auth::user()->polyclinic_id;
 
             if ($item->save()) {
                 DB::commit();
@@ -127,13 +130,14 @@ class TelegramUserService extends AbstractService
     public function update($id, $data)
     {
 
-        $item = $this->model::where('id', $id)
+        $item = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('id', $id)
             ->first();
 
         if (!$item) {
             return [
                 'status' => false,
-                'message' => "Staff not found",
+                'message' => "Telegram user not found",
                 'statusCode' => 403,
                 'data' => null
             ];
@@ -213,14 +217,15 @@ class TelegramUserService extends AbstractService
      */
     public function delete($id)
     {
-        $item = $this->model::where('id', $id)
+        $item = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('id', $id)
             ->first();
 
         if (!$item) {
 
             return [
                 'status' => false,
-                'message' => 'Telegram table deleted',
+                'message' => 'Telegram user not found',
                 'statusCode' => 403,
                 'data' => null
             ];
@@ -250,24 +255,19 @@ class TelegramUserService extends AbstractService
 
     public function search($data)
     {
-
-
-        $search = $data['search'] ?? '';
+        $key = $data['key'] ?? '';
         $column = $data['column'] ?? 'id';
         $order = $data['order'] ?? 'asc';
 
-        if ($data == ''){
-            $items = $this->model::orderBy($data['column'], $data['order'])
-                ->paginate(20);
-        }else{
-            $items = $this->model::where('name', 'like', "%$search%")
-                ->orWhere('telegram_id', 'like', "%$search%")
-                ->orderBy($column, $order)
-                ->paginate(20);
-        }
+        $items = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where(function ($query) use ($key) {
+                empty($key) ? $query : $query->where('name', 'like', '%' . $key . '%')
+                    ->orWhere('telegram_id', 'like', '%' . $key . '%');
+            })
+            ->orderBy($column, $order)
+            ->paginate(20);
 
-
-        $data =  [
+        $data = [
             'patients' => TelegramUserResource::collection($items),
             'pagination' => [
                 'total' => $items->total(),
@@ -300,10 +300,6 @@ class TelegramUserService extends AbstractService
 
         ];
     }
-
-
-
-
 
 
 }

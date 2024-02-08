@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasTranslations;
 use App\Traits\Status;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
@@ -19,11 +20,34 @@ class Tariff extends Model
      */
     public $translatable = ['name'];
 
+    /**
+     * @param $search
+     * @return Builder
+     */
     public static function search($search)
     {
         return empty($search)
             ? static::query()
             : static::query()->where('name->uz', 'like', '%' . $search . '%');
+    }
+
+
+    /**
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function (Tariff $model) {
+            $model->fee_for_one_doctor = $model->price / $model->max_doctor_count;
+            dd($model->fee_for_one_doctor);
+        });
+
+        self::updating(function(Tariff $model){
+            $model->fee_for_one_doctor = $model->price / $model->max_doctor_count;
+        });
+
     }
 
     //<editor-fold desc="Duration">

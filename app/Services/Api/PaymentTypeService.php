@@ -8,6 +8,7 @@ use App\Http\Resources\PaymentTypeResource;
 use App\Models\PaymentType;
 use App\Models\User;
 use App\Traits\Status;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,7 +26,8 @@ class PaymentTypeService extends AbstractService
     public function index()
     {
 
-        $items = $this->model::where('status', Status::$status_active)
+        $items = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('status', Status::$status_active)
             ->orderBy('created_at', 'asc')
             ->paginate(20);
 
@@ -93,7 +95,7 @@ class PaymentTypeService extends AbstractService
             $patient = new $this->model;
             $patient->name = $data['name'];
             $patient->icon = $data['icon'];
-            $patient->color = $data['color'];
+            $patient->color = $data['color'] ?? '';
             $patient->polyclinic_id = auth()->user()->polyclinic_id;
             $patient->status = Status::$status_active;
 
@@ -144,7 +146,7 @@ class PaymentTypeService extends AbstractService
         if (!$item) {
             return [
                 'status' => false,
-                'message' => "Staff not found",
+                'message' => "Payment type not found",
                 'statusCode' => 403,
                 'data' => null
             ];
@@ -194,8 +196,7 @@ class PaymentTypeService extends AbstractService
         try {
             $item->name = $data['name'];
             $item->icon = $data['icon'];
-            $item->color = $data['color'];
-            $item->polyclinic_id = auth()->user()->polyclinic_id;
+            $item->color = $data['color'] ?? '';
             $item->status = Status::$status_active;
 
 
@@ -205,7 +206,7 @@ class PaymentTypeService extends AbstractService
                 DB::rollback();
                 return [
                     'status' => false,
-                    'message' => 'update user error',
+                    'message' => 'update payment type error',
                     'statusCode' => 500,
                     'data' => null
                 ];
@@ -247,7 +248,7 @@ class PaymentTypeService extends AbstractService
 
                 return [
                     'status' => false,
-                    'message' => 'Staff deleted',
+                    'message' => 'Payment type deleted',
                     'statusCode' => 403,
                     'data' => null
                 ];
