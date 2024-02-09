@@ -86,30 +86,30 @@ class Tariff extends Model
 
     //</editor-fold>
 
-    /**
-     * @return bool
-     */
-    public function getIsFree()
-    {
-        return $this->is_free == 1;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIsFreeText()
-    {
-        return $this->is_free == 1 ? 'Ha' : "Yo'q";
-    }
-
-    /**
-     * @return string
-     */
-    public function getIsFreeBadgeText()
-    {
-        if ($this->is_free == 1) {
-            return "<span class='badge badge-success'>Ha</span>";
-        }
-        return "<span class='badge badge-danger'>Yo'q</span>";
-    }
+//    /**
+//     * @return bool
+//     */
+//    public function getIsFree()
+//    {
+//        return $this->is_free == 1;
+//    }
+//
+//    /**
+//     * @return string
+//     */
+//    public function getIsFreeText()
+//    {
+//        return $this->is_free == 1 ? 'Ha' : "Yo'q";
+//    }
+//
+//    /**
+//     * @return string
+//     */
+//    public function getIsFreeBadgeText()
+//    {
+//        if ($this->is_free == 1) {
+//            return "<span class='badge badge-success'>Ha</span>";
+//        }
+//        return "<span class='badge badge-danger'>Yo'q</span>";
+//    }
 }

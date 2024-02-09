@@ -381,7 +381,7 @@ class PatientService extends AbstractService
             TextField::make('born_date')->setRules('nullable|min:3|max:255'),
             TextField::make('address')->setRules('nullable|min:3|max:255'),
             TextField::make('job')->setRules('nullable|min:3|max:255'),
-            TextField::make('phone')->setRules('nullable|numeric'),
+            TextField::make('phone')->setRules('nullable|string'),
             TextField::make('gender_id')->setRules('required|integer'),
             TextField::make('select_diseases')->setRules('nullable'),
 

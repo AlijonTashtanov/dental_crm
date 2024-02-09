@@ -32,7 +32,7 @@ class TariffService extends AbstractService
         $item->duration_number = $data['duration_number'] ?? 0;
         $item->duration_text = $data['duration_text'] ?? null;
         $item->status = isset($data['status']) ? Status::$status_active : Status::$status_inactive;
-        $item->is_free = isset($data['is_free']) ? 1 : 0;
+//        $item->is_free = isset($data['is_free']) ? 1 : 0;
         $item->max_doctor_count = $data['max_doctor_count'];
         $item->setTranslations('name', $translationNames);
         $item->save();
@@ -51,7 +51,7 @@ class TariffService extends AbstractService
         $item->duration_number = $data['duration_number'] ?? 0;
         $item->duration_text = $data['duration_text'] ?? null;
         $item->status = isset($data['status']) ? Status::$status_active : Status::$status_inactive;
-        $item->is_free = isset($data['is_free']) ? 1 : 0;
+//        $item->is_free = isset($data['is_free']) ? 1 : 0;
         $item->max_doctor_count = $data['max_doctor_count'];
         $item->setTranslations('name', $translationNames);
         $item->save();

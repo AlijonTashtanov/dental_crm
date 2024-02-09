@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PaymentTypeController;
 use App\Http\Controllers\Api\PolyclinicController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ReceptionController;
 use App\Http\Controllers\Api\ServiceCategoryController;
 use App\Http\Controllers\Api\TechnicController;
@@ -37,7 +38,16 @@ Route::group(['prefix' => 'polyclinic'], function () {
 
 Route::get('/regions', [PolyclinicController::class, 'regions']);
 
+// Auth user
+Route::middleware(['auth:api'])->group(function () {
+    // Profile
+    Route::group(['prefix' => 'profile'], function () {
+        Route::post('/logout', [ProfileController::class, 'logout']);
+    });
+});
 
+
+// Super Admin rule
 Route::middleware(['auth:api', 'api_admin'])->group(function () {
     Route::group(['prefix' => 'staff'], function () {
         Route::get('/index', [DoctorController::class, 'index']);
@@ -79,6 +89,7 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::get('/debtors', [PatientController::class, 'debtors']);
     });
 
+    // Kasalliklar
     Route::group(['prefix' => 'disease'], function () {
         Route::get('/index', [DiseaseController::class, 'index']);
         Route::get('/search', [DiseaseController::class, 'search']);
@@ -106,6 +117,7 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
 
 });
 
+// Reception rule
 Route::middleware(['auth:api', 'api_reception'])->group(function () {
 
     // Patient

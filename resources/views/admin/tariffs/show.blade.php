@@ -49,10 +49,10 @@
                     <th>Holati</th>
                     <td>{!! $response->getStatusBadgeName() !!}</td>
                 </tr>
-                <tr>
-                    <th>Bepulmi</th>
-                    <td>{!! $response->getIsFreeBadgeText() !!}</td>
-                </tr>
+{{--                <tr>--}}
+{{--                    <th>Bepulmi</th>--}}
+{{--                    <td>{!! $response->getIsFreeBadgeText() !!}</td>--}}
+{{--                </tr>--}}
                 <tr>
                     <th>Yaratilgan vaqti</th>
                     <td>{{$response->created_at}}</td>

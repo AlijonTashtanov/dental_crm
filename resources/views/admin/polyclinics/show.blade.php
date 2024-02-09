@@ -1,15 +1,20 @@
 @extends('admin.layouts.app')
 @section('title')
-    Polyclinics
+    {{$response->name}}
 @endsection
+
 @section('content')
-    <x-headers title="Polyclinics" icon="fas fa-circle" parent="parent" parent-route="admin.polyclinics.index"
+    <x-headers title="{{$response->name}}" icon="fas fa-circle" parent="Klinikalar"
+               parent-route="admin.polyclinics.index"
                parent-icon=""/>
+
+    @include('admin.polyclinics.tab-menu')
+
     <div class="card card-outline card-primary">
         <div class="card-header">
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="maximize"><i
-                        class="fas fa-expand"></i></button>
+                            class="fas fa-expand"></i></button>
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-plus"></i>
                 </button>
@@ -26,7 +31,7 @@
                     <td>{{$response->name}}</td>
                 </tr>
                 <tr>
-                    <th>Telefon raqami </th>
+                    <th>Telefon raqami</th>
                     <td>{{$response->phone}}</td>
                 </tr>
                 <tr>
@@ -39,7 +44,7 @@
                 </tr>
                 <tr>
                     <th>Holati</th>
-                    <td>{{ $response->getStatus()  }}</td>
+                    <td>{!!   $response->getStatusBadgeName()  !!}</td>
                 </tr>
 
             </table>

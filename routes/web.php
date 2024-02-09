@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PolyclinicController;
+use App\Http\Controllers\PolyclinicPaymentController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\TariffController;
 use App\Http\Livewire\Admin\UserProfile;
@@ -43,6 +44,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('/tariffs', TariffController::class);
     Route::resource('/regions', RegionController::class);
     Route::resource('/polyclinics', PolyclinicController::class);
+
+    Route::group(['prefix' => 'one-polyclinic-payments', 'as' => 'one-polyclinic-payments.'], function () {
+        Route::get('/index/{id}', [PolyclinicController::class, 'polyclinicPayments'])->name('index');
+        Route::get('/create/{id}', [PolyclinicController::class])->name('create');
+    });
 
 //Profile
     Route::get('/profile', UserProfile::class)->name('profile');

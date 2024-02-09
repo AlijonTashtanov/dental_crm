@@ -68,14 +68,14 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="custom-control custom-checkbox">
-            <input class="custom-control-input" type="checkbox"
-                   id="customCheckbox2" name="is_free"
-                   {{$response->is_free== 1 ? 'checked' : 0 }} value="{{$response->is_free== 1 ? 'checked' : 0 }}">
-            <label for="customCheckbox2" class="custom-control-label">Bepul sifatida belgilash</label>
-        </div>
-    </div>
+{{--    <div class="form-group">--}}
+{{--        <div class="custom-control custom-checkbox">--}}
+{{--            <input class="custom-control-input" type="checkbox"--}}
+{{--                   id="customCheckbox2" name="is_free"--}}
+{{--                   {{$response->is_free== 1 ? 'checked' : 0 }} value="{{$response->is_free== 1 ? 'checked' : 0 }}">--}}
+{{--            <label for="customCheckbox2" class="custom-control-label">Bepul sifatida belgilash</label>--}}
+{{--        </div>--}}
+{{--    </div>--}}
     <div class="form-group">
         <div class="bootstrap-switch-on bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate"
              style="width: 120px;">
