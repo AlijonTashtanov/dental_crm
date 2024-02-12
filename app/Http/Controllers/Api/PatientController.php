@@ -62,9 +62,6 @@ class PatientController extends AbstractController
         return $this->sendResponse($patients);
     }
 
-
-
-
     /**
      * @return array|JsonResponse
      */

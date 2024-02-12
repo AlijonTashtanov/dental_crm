@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OnePolyclincTariffController;
+use App\Http\Controllers\OnePolyclinicPaymentController;
 use App\Http\Controllers\PolyclinicController;
 use App\Http\Controllers\PolyclinicPaymentController;
 use App\Http\Controllers\RegionController;
@@ -45,9 +47,22 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('/regions', RegionController::class);
     Route::resource('/polyclinics', PolyclinicController::class);
 
-    Route::group(['prefix' => 'one-polyclinic-payments', 'as' => 'one-polyclinic-payments.'], function () {
+    Route::group(['prefix' => 'one-polyclinic-payment', 'as' => 'one-polyclinic-payment.'], function () {
         Route::get('/index/{id}', [PolyclinicController::class, 'polyclinicPayments'])->name('index');
-        Route::get('/create/{id}', [PolyclinicController::class])->name('create');
+        Route::get('/create/{id}', [OnePolyclinicPaymentController::class, 'polyclinicPaymentCreate'])->name('create');
+        Route::post('/store', [OnePolyclinicPaymentController::class, 'polyclinicPaymentStore'])->name('store');
+        Route::get('/edit/{id}', [OnePolyclinicPaymentController::class, 'polyclinicPaymentEdite'])->name('edit');
+        Route::put('/update/{id}', [OnePolyclinicPaymentController::class, 'polyclinicPaymentUpdate'])->name('update');
+        Route::delete('/destroy/{id}', [OnePolyclinicPaymentController::class, 'polyclinicPaymentDestroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'one-polyclinic-tariff', 'as' => 'one-polyclinic-tariff.'], function () {
+        Route::get('/index/{id}', [PolyclinicController::class, 'polyclinicTariffs'])->name('index');
+        Route::get('/create/{id}', [OnePolyclincTariffController::class, 'polyclinicTariffCreate'])->name('create');
+        Route::post('/store', [OnePolyclincTariffController::class, 'polyclinicTariffStore'])->name('store');
+//        Route::get('/edit/{id}', [OnePolyclincTariffController::class, 'polyclinicTariffEdite'])->name('edit');
+//        Route::put('/update/{id}', [OnePolyclincTariffController::class, 'polyclinicTariffUpdate'])->name('update');
+        Route::delete('/destroy/{id}', [OnePolyclincTariffController::class, 'polyclinicTariffDestroy'])->name('destroy');
     });
 
 //Profile

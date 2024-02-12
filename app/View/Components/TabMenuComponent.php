@@ -43,6 +43,6 @@ class TabMenuComponent extends Component
      */
     public function render()
     {
-        return view('components.tab-menu');
+        return view('components.tab-menu-component');
     }
 }

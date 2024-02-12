@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\Status;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Service extends Model
 {
@@ -18,6 +19,9 @@ class Service extends Model
             : static::query()->where('name', 'like', '%' . $search . '%');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function polyclinic()
     {
         return $this->belongsTo(Polyclinic::class);

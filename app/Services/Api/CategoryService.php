@@ -4,7 +4,6 @@ namespace App\Services\Api;
 
 use App\Fields\Store\TextField;
 use App\Http\Resources\CategoryResource;
-use App\Http\Resources\UserResource;
 use App\Models\Category;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;

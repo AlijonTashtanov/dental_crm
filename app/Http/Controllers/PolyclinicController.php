@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 class PolyclinicController extends AbstractController
 {
     protected $dir = 'polyclinics';
+
     protected $serviceClass = PolyclinicService::class;
 
     protected $permissionCheck = false;
@@ -18,7 +19,6 @@ class PolyclinicController extends AbstractController
     {
         $this->config = [
             'rules' => [
-                //
             ]
         ];
     }
@@ -30,5 +30,14 @@ class PolyclinicController extends AbstractController
     {
         $response = $this->service->show($id);
         return view('admin.' . $this->dir . '.polyclinic-payments', compact('response')); //index
+    }
+
+    /**
+     * @return Application|Factory|View
+     */
+    public function polyclinicTariffs($id)
+    {
+        $response = $this->service->show($id);
+        return view('admin.' . $this->dir . '.polyclinic-tariffs', compact('response')); //index
     }
 }

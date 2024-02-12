@@ -33,6 +33,13 @@ trait Status
 
 
     /**
+     * Holati bekor qilingan
+     * @var int
+     */
+    public static int $status_cancel = 4;
+
+
+    /**
      * @return string[]
      */
     public static function statuses()
@@ -42,6 +49,7 @@ trait Status
             self::$status_inactive => 'Nofaol',
             self::$status_waiting => "Kutish holatida",
             self::$status_deleted => "O'chirilgan",
+            self::$status_cancel => "Bekor qilingan",
         ];
     }
 

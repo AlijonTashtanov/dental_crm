@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('title')
-    Polyclinics
+    Qo'shish
 @endsection
 @section('content')
     <x-headers icon="fas fa-circle" title="Polyclinics" parent="" parent-icon="" parent-route="admin.polyclinics.index"/>

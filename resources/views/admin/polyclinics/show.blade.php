@@ -43,6 +43,10 @@
                     <td>{{ $response->region->getTranslation('name', 'uz' )}}</td>
                 </tr>
                 <tr>
+                    <th>Balans</th>
+                    <td>{{ $response->balanceFormatSum()}}</td>
+                </tr>
+                <tr>
                     <th>Holati</th>
                     <td>{!!   $response->getStatusBadgeName()  !!}</td>
                 </tr>

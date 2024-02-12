@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasTranslations;
+use App\Traits\QueriesTrait;
 use App\Traits\Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class Tariff extends Model
 {
     use Status;
     use HasTranslations;
+    use QueriesTrait;
 
     protected $fillable = [];
 
@@ -85,6 +87,15 @@ class Tariff extends Model
     }
 
     //</editor-fold>
+
+
+    /**
+     * @return mixed
+     */
+    public static function map()
+    {
+        return self::active()->get();
+    }
 
 //    /**
 //     * @return bool

@@ -7,9 +7,12 @@
             <table class="table table-bordered table-hover">
                 <tr>
                     <th>ID</th>
-                    <th>To'lov miqdori</th>
-                    <th>To'lov turi</th>
-                    <th>Izoh</th>
+                    <th>Obuna nomi</th>
+                    <th>Obuna narxi</th>
+                    <th>Ruxsat berilgan Max doktorlar soni</th>
+                    <th>Boshlanish sanasi</th>
+                    <th>Tugash sanasi sanasi</th>
+                    <th>Holati</th>
                     <th>Yaratildi</th>
                     <th>Tahrirlandi</th>
                     <th>Harakatlar</th>
@@ -17,14 +20,17 @@
                 @forelse($items as $item)
                     <tr>
                         <td>{{ (($items->currentpage()-1)*$items->perpage()+($loop->index+1)) }}</td>
-                        <td>{{decimal($item->amount)}}</td>
-                        <td>{{$item->getPaymentTypeName()}}</td>
-                        <td>{{$item->comment}}</td>
+                        <td>{{$item->tariff?->getTranslation('name', 'uz')}}</td>
+                        <td>{{decimal($item->price)}}</td>
+                        <td>{{$item->max_doctor_count}}</td>
+                        <td>{{$item->start_at}}</td>
+                        <td>{{$item->expire_at}}</td>
+                        <td>{!! $item->getStatusBadgeName()!!}</td>
                         <td>{{$item->created_at}}</td>
                         <td>{{$item->updated_at}}</td>
                         <td>
-                            <a href="{{route('admin.'.$this->route.'.edit', $item->id)}}" class="btn btn-success"><i
-                                    class="fas fa-pencil-alt"></i> Tahrirlash</a>
+{{--                            <a href="{{route('admin.'.$this->route.'.edit', $item->id)}}" class="btn btn-success"><i--}}
+{{--                                    class="fas fa-pencil-alt"></i> Tahrirlash</a>--}}
                             <form action="{{route('admin.'.$this->route.'.destroy', $item->id)}}" method="POST"
                                   class="d-inline-block">
                                 @csrf
@@ -37,7 +43,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7">No data found :(</td>
+                        <td colspan="10">No data found :(</td>
                     </tr>
                 @endforelse
             </table>

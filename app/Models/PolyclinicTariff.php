@@ -5,12 +5,15 @@ namespace App\Models;
 use App\Traits\Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Category extends Model
+class PolyclinicTariff extends Model
 {
     use Status;
 
+    /**
+     * @var array
+     */
     protected $fillable = [];
 
     /**
@@ -24,11 +27,22 @@ class Category extends Model
             : static::query()->where('name', 'like', '%' . $search . '%');
     }
 
+    //<editor-fold desc="Relations">
+
     /**
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function services()
+    public function polyclinic()
     {
-        return $this->hasMany(Service::class);
+        return $this->belongsTo(Polyclinic::class, 'polyclinic_id', 'id');
     }
+
+    /**
+     * @return BelongsTo
+     */
+    public function tariff()
+    {
+        return $this->belongsTo(Tariff::class, 'tariff_id', 'id');
+    }
+    //</editor-fold>
 }

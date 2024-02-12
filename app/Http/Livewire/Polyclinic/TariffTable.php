@@ -3,17 +3,16 @@
 namespace App\Http\Livewire\Polyclinic;
 
 use App\Http\Livewire\BaseLivewire;
-use App\Models\Polyclinic;
-use App\Models\PolyclinicPayment;
+use App\Models\PolyclinicTariff;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 
-class PaymentTable extends BaseLivewire
+class TariffTable extends BaseLivewire
 {
-    public $path = 'polyclinic.payment-table'; // component view path
-    public $model = PolyclinicPayment::class; // model
-    public $route = 'one-polyclinic-payment'; // route for actions(CRUD)
+    public $path = 'polyclinic.tariff-table'; // component view path
+    public $model = PolyclinicTariff::class; // model
+    public $route = 'one-polyclinic-tariff'; // route for actions(CRUD)
 
     /**
      * @var
@@ -43,5 +42,4 @@ class PaymentTable extends BaseLivewire
 
         return view('livewire.' . $this->path, compact('items'));
     }
-
 }

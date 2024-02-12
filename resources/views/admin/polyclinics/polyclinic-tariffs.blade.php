@@ -7,11 +7,9 @@
                parent-route="admin.polyclinics.index" parent-icon=""/>
     @include('admin.polyclinics.tab-menu')
     <div class="d-flex justify-content-end py-2">
-        <a href="{{route('admin.one-polyclinic-payment.create',$response->id)}}" class="btn btn-primary"><i
+        <a href="{{route('admin.one-polyclinic-tariff.create',$response->id)}}" class="btn btn-primary"><i
                 class="fas fa-plus"></i>
             Qo'shish</a>
     </div>
-    @livewire('polyclinic.payment-table',['polyclinicId' => $response->id])
-
-    <h2>Jami to'lovlar: {{$response->balanceFormatSum()}}</h2>
+    @livewire('polyclinic.tariff-table',['polyclinicId' => $response->id])
 @endsection
