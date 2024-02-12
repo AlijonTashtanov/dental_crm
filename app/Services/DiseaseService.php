@@ -289,21 +289,21 @@ class DiseaseService extends \App\Services\Api\AbstractService
         $column = $data['column'] ?? 'id';
         $sort = $data['sort'] ?? 'asc';
 
-        $staffs = $this->model::where('name', 'like', '%' . $key . '%')
+        $diseases = $this->model::where('name', 'like', '%' . $key . '%')
             ->where('polyclinic_id', Auth::user()->polyclinic_id)
             ->where('status', '!=', User::$status_deleted)
             ->orderBy($column, $sort)
             ->paginate(20);
 
         $data = [
-            'staffs' => DiseaseResource::collection($staffs),
+            'diseases' => DiseaseResource::collection($diseases),
             'pagination' => [
-                'total' => $staffs->total(),
-                'per_page' => $staffs->perPage(),
-                'current_page' => $staffs->currentPage(),
-                'last_page' => $staffs->lastPage(),
-                'from' => $staffs->firstItem(),
-                'to' => $staffs->lastItem(),
+                'total' => $diseases->total(),
+                'per_page' => $diseases->perPage(),
+                'current_page' => $diseases->currentPage(),
+                'last_page' => $diseases->lastPage(),
+                'from' => $diseases->firstItem(),
+                'to' => $diseases->lastItem(),
             ],
         ];
 
