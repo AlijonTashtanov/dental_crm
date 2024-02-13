@@ -257,7 +257,7 @@ class TelegramUserService extends AbstractService
     {
         $key = $data['key'] ?? '';
         $column = $data['column'] ?? 'id';
-        $order = $data['order'] ?? 'asc';
+        $order = $data['sort'] ?? 'asc';
 
         $items = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
             ->where(function ($query) use ($key) {
@@ -268,7 +268,7 @@ class TelegramUserService extends AbstractService
             ->paginate(20);
 
         $data = [
-            'patients' => TelegramUserResource::collection($items),
+            'telegram_users' => TelegramUserResource::collection($items),
             'pagination' => [
                 'total' => $items->total(),
                 'per_page' => $items->perPage(),
