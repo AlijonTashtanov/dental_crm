@@ -33,9 +33,9 @@ trait PolyclinicTariffTrait
      */
     public function activePolyclinicTariff()
     {
-        return $this->belongsTo(PolyclinicTariff::class, 'polyclinic_id', 'id')
+        return $this->belongsTo(PolyclinicTariff::class, 'id', 'polyclinic_id')
             ->where('status', Status::$status_active)
-            ->where('>=', 'expired_at', time());
+            ->where('expire_at', '>=', date('Y-m-d H:i:s'));
     }
 
     /**
@@ -43,9 +43,9 @@ trait PolyclinicTariffTrait
      */
     public function lastPolyclinicTariff()
     {
-        return $this->belongsTo(PolyclinicTariff::class, 'polyclinic_id', 'id')
+        return $this->belongsTo(PolyclinicTariff::class, 'id', 'polyclinic_id')
             ->where('status', Status::$status_active)
-            ->orderBy('expired_at', 'desc');
+            ->orderBy('expire_at', 'desc');
     }
 
 
@@ -93,10 +93,10 @@ trait PolyclinicTariffTrait
             }
         }
 
-        if ($lastTariff && $tariff->tariff_id == $activeTariff->tariff_id) {
-            $begin = $lastTariff->expired_at;
+        if ($lastTariff && $tariff->id == $activeTariff->tariff_id) {
+            $begin = $lastTariff->expire_at;
             if ($begin < date('Y-m-d H:i:s')) {
-                $begin = date('Y-m-d H:i:s')();
+                $begin = date('Y-m-d H:i:s');
             }
         } else {
             $begin = date('Y-m-d H:i:s');
@@ -123,7 +123,6 @@ trait PolyclinicTariffTrait
     {
         if ($this->_polyclinicTariffsSum === null) {
             $this->_polyclinicTariffsSum = (int)$this->polyclinicTariffs()
-                ->where('status', Status::$status_active)
                 ->sum('price');
         }
 

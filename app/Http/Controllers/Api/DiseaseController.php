@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Services\DiseaseService;
+use App\Services\Api\DiseaseService;
 use Illuminate\Http\JsonResponse;
 
 class DiseaseController extends AbstractController

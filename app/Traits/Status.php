@@ -81,6 +81,11 @@ trait Status
             return "<span class='badge badge-secondary'>{$this->getStatusName()}</span>";
         }
 
+        if ($this->status == self::$status_cancel) {
+
+            return "<span class='badge badge-warning'>{$this->getStatusName()}</span>";
+        }
+
         return "<span class='badge badge-success'>{$this->getStatusName()}</span>";
     }
 

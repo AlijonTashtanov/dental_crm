@@ -24,6 +24,10 @@ class CategoryService extends AbstractService
     protected $serviceModel = Service::class;
 
     //<editor-fold desc="create category">
+
+    /**
+     * @return array|mixed
+     */
     public function index()
     {
         $categories = $this->model::where('status', '!=', Category::$status_deleted)->get();

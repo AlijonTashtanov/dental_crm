@@ -24,10 +24,20 @@
 </li>
 
 <li class="nav-item">
-    <a href="{{route('admin.polyclinics.index')}}" class="nav-link @if (request()->is('admin/polyclinics')) active @endif">
+    <a href="{{route('admin.polyclinics.index')}}"
+       class="nav-link @if (request()->is('admin/polyclinics')) active @endif">
         <i class="nav-icon fas fa-hospital"></i>
         <p>
             Klinikalar
+        </p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{route('admin.settings.index')}}"
+       class="nav-link @if (request()->is('admin/settings')) active @endif">
+        <i class="nav-icon fas fa-cogs"></i>
+        <p>
+            Sozlamalar
         </p>
     </a>
 </li>

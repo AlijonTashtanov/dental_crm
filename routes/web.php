@@ -6,6 +6,7 @@ use App\Http\Controllers\OnePolyclinicPaymentController;
 use App\Http\Controllers\PolyclinicController;
 use App\Http\Controllers\PolyclinicPaymentController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TariffController;
 use App\Http\Livewire\Admin\UserProfile;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('/tariffs', TariffController::class);
     Route::resource('/regions', RegionController::class);
     Route::resource('/polyclinics', PolyclinicController::class);
+    Route::resource('/settings', SettingController::class);
 
     Route::group(['prefix' => 'one-polyclinic-payment', 'as' => 'one-polyclinic-payment.'], function () {
         Route::get('/index/{id}', [PolyclinicController::class, 'polyclinicPayments'])->name('index');

@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\PolyclinicController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ReceptionController;
 use App\Http\Controllers\Api\ServiceCategoryController;
+use App\Http\Controllers\Api\TariffController;
 use App\Http\Controllers\Api\TechnicController;
 use App\Http\Controllers\Api\TelegramUserController;
 use Illuminate\Http\Request;
@@ -130,3 +131,5 @@ Route::middleware(['auth:api', 'api_reception'])->group(function () {
     });
 
 });
+
+Route::get('/tariffs', [TariffController::class, 'index']);

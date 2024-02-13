@@ -3,19 +3,20 @@
 namespace App\Services\Api;
 
 use App\Fields\Store\TextField;
-use App\Http\Resources\TelegramUserResource;
-use App\Models\TelegramUser;
+use App\Http\Resources\DiseaseResource;
+use App\Models\Disease;
+use App\Models\User;
+use App\Traits\Status;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class TelegramUserService extends AbstractService
+class DiseaseService extends AbstractService
 {
-
     /**
      * @var string
      */
-    protected $model = TelegramUser::class;
+    protected $model = Disease::class;
 
     /**
      * @return array
@@ -23,19 +24,19 @@ class TelegramUserService extends AbstractService
     public function index()
     {
 
-        $items = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+        $allDiseases = $this->model::where('status', Status::$status_active)
             ->orderBy('created_at', 'asc')
             ->paginate(20);
 
         $data = [
-            'telegram_users' => TelegramUserResource::collection($items),
+            'diseases' => DiseaseResource::collection($allDiseases),
             'pagination' => [
-                'total' => $items->total(),
-                'per_page' => $items->perPage(),
-                'current_page' => $items->currentPage(),
-                'last_page' => $items->lastPage(),
-                'from' => $items->firstItem(),
-                'to' => $items->lastItem(),
+                'total' => $allDiseases->total(),
+                'per_page' => $allDiseases->perPage(),
+                'current_page' => $allDiseases->currentPage(),
+                'last_page' => $allDiseases->lastPage(),
+                'from' => $allDiseases->firstItem(),
+                'to' => $allDiseases->lastItem(),
             ],
         ];
 
@@ -86,12 +87,13 @@ class TelegramUserService extends AbstractService
         $data = $validator->validated();
         DB::beginTransaction();
         try {
-            $item = new $this->model;
-            $item->name = $data['name'];
-            $item->telegram_id = $data['telegram_id'];
-            $item->polyclinic_id = Auth::user()->polyclinic_id;
+            $patient = new $this->model;
+            $patient->name = $data['name'];
+            $patient->color = $data['color'];
+            $patient->polyclinic_id = auth()->user()->polyclinic_id;
+            $patient->status = Status::$status_active;
 
-            if ($item->save()) {
+            if ($patient->save()) {
                 DB::commit();
             } else {
                 DB::rollback();
@@ -130,18 +132,27 @@ class TelegramUserService extends AbstractService
     public function update($id, $data)
     {
 
-        $item = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+        $item = $this->model::where('polyclinic_id', auth()->user()->polyclinic_id)
             ->where('id', $id)
             ->first();
 
         if (!$item) {
             return [
                 'status' => false,
-                'message' => "Telegram user not found",
+                'message' => "Staff not found",
                 'statusCode' => 403,
                 'data' => null
             ];
 
+        }
+        if ($item->status == User::$status_deleted) {
+
+            return [
+                'status' => false,
+                'message' => "User deleted",
+                'statusCode' => 403,
+                'data' => null
+            ];
         }
 
         $fields = $this->getFields();
@@ -176,11 +187,11 @@ class TelegramUserService extends AbstractService
         $data = $validator->validated();
         DB::beginTransaction();
         try {
-
-            $item->name = $data['name'];
-            $item->telegram_id = $data['telegram_id'];
-
-            if ($item->save()) {
+            $patient = $item;
+            $patient->name = $data['name'];
+            $patient->color = $data['color'];
+            $patient->status = Status::$status_active;
+            if ($patient->save()) {
                 DB::commit();
             } else {
                 DB::rollback();
@@ -217,30 +228,32 @@ class TelegramUserService extends AbstractService
      */
     public function delete($id)
     {
-        $item = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
+        $item = $this->model::where('polyclinic_id', auth()->user()->polyclinic_id)
             ->where('id', $id)
             ->first();
 
-        if (!$item) {
-
-            return [
-                'status' => false,
-                'message' => 'Telegram user not found',
-                'statusCode' => 403,
-                'data' => null
-            ];
-        }
-
         if ($item) {
 
-            $item->delete();
+            if ($item->status == User::$status_deleted) {
+
+                return [
+                    'status' => false,
+                    'message' => 'Staff deleted',
+                    'statusCode' => 403,
+                    'data' => null
+                ];
+            }
+
+            $item->status = User::$status_deleted;
+            $item->deleted_at = date('Y-m-d H:i:s');
+            $item->deleted_by = auth()->user()->id;
 
             if ($item->save()) {
                 return [
                     'status' => true,
                     'message' => 'success',
                     'statusCode' => 200,
-                    'data' => TelegramUserResource::make($item)
+                    'data' => DiseaseResource::make($item)
                 ];
             }
         }
@@ -253,41 +266,6 @@ class TelegramUserService extends AbstractService
         ];
     }
 
-    public function search($data)
-    {
-        $key = $data['key'] ?? '';
-        $column = $data['column'] ?? 'id';
-        $order = $data['order'] ?? 'asc';
-
-        $items = $this->model::where('polyclinic_id', Auth::user()->polyclinic_id)
-            ->where(function ($query) use ($key) {
-                empty($key) ? $query : $query->where('name', 'like', '%' . $key . '%')
-                    ->orWhere('telegram_id', 'like', '%' . $key . '%');
-            })
-            ->orderBy($column, $order)
-            ->paginate(20);
-
-        $data = [
-            'patients' => TelegramUserResource::collection($items),
-            'pagination' => [
-                'total' => $items->total(),
-                'per_page' => $items->perPage(),
-                'current_page' => $items->currentPage(),
-                'last_page' => $items->lastPage(),
-                'from' => $items->firstItem(),
-                'to' => $items->lastItem(),
-            ],
-        ];
-
-        return [
-            'status' => true,
-            'message' => 'success',
-            'statusCode' => 200,
-            'data' => $data
-        ];
-
-    }
-
 
     /**
      * @return array
@@ -296,10 +274,44 @@ class TelegramUserService extends AbstractService
     {
         return [
             TextField::make('name')->setRules('required|min:3|max:255'),
-            TextField::make('telegram_id')->setRules('required|min:3|max:255'),
+            TextField::make('color')->setRules('nullable|min:3|max:255'),
 
         ];
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function search(array $data)
+    {
+        $key = $data['key'] ?? '';
+        $column = $data['column'] ?? 'id';
+        $sort = $data['sort'] ?? 'asc';
 
+        $diseases = $this->model::where('name', 'like', '%' . $key . '%')
+            ->where('polyclinic_id', Auth::user()->polyclinic_id)
+            ->where('status', '!=', User::$status_deleted)
+            ->orderBy($column, $sort)
+            ->paginate(20);
+
+        $data = [
+            'diseases' => DiseaseResource::collection($diseases),
+            'pagination' => [
+                'total' => $diseases->total(),
+                'per_page' => $diseases->perPage(),
+                'current_page' => $diseases->currentPage(),
+                'last_page' => $diseases->lastPage(),
+                'from' => $diseases->firstItem(),
+                'to' => $diseases->lastItem(),
+            ],
+        ];
+
+        return [
+            'status' => true,
+            'message' => 'Success',
+            'statusCode' => 200,
+            'data' => $data
+        ];
+    }
 }
