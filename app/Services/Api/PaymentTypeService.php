@@ -32,7 +32,7 @@ class PaymentTypeService extends AbstractService
             ->paginate(20);
 
         $data = [
-            'payment-types' => PaymentTypeResource::collection($items),
+            'payment_types' => PaymentTypeResource::collection($items),
             'pagination' => [
                 'total' => $items->total(),
                 'per_page' => $items->perPage(),
