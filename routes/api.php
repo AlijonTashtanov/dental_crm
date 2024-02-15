@@ -51,11 +51,16 @@ Route::middleware(['auth:api'])->group(function () {
 // Super Admin rule
 Route::middleware(['auth:api', 'api_admin'])->group(function () {
     Route::group(['prefix' => 'staff'], function () {
+
         Route::get('/index', [DoctorController::class, 'index']);
         Route::get('/show/{id}', [DoctorController::class, 'show']);
         Route::delete('/delete/{id}', [DoctorController::class, 'destroy']);
         Route::get('/checkSortOrder', [DoctorController::class, 'checkSortOrder']);
         Route::get('/search', [DoctorController::class, 'search']);
+
+        // Doctor
+        Route::post('/doctor/create', [DoctorController::class, 'create']);
+        Route::put('/doctor/update/{id}', [DoctorController::class, 'update']);
 
         // Reception
         Route::post('/reception/create', [ReceptionController::class, 'create']);
