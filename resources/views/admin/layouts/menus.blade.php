@@ -41,6 +41,15 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{route('admin.my-log-viewer')}}"
+       class="nav-link @if (request()->is('my-log-viewer')) active @endif">
+        <i class="nav-icon fas fa-server"></i>
+        <p>
+            Logs
+        </p>
+    </a>
+</li>
 {{-- <li class="nav-item menu-open">
     <a href="#" class="nav-link active">
         <i class="nav-icon fas fa-tachometer-alt"></i>

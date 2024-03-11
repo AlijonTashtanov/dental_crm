@@ -48,7 +48,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('/regions', RegionController::class);
     Route::resource('/polyclinics', PolyclinicController::class);
     Route::resource('/settings', SettingController::class);
-
+    Route::get('/my-log-viewer', function (Request $request) {
+        return redirect('/my-log-viewer');
+    })->name('my-log-viewer');
     Route::group(['prefix' => 'one-polyclinic-payment', 'as' => 'one-polyclinic-payment.'], function () {
         Route::get('/index/{id}', [PolyclinicController::class, 'polyclinicPayments'])->name('index');
         Route::get('/create/{id}', [OnePolyclinicPaymentController::class, 'polyclinicPaymentCreate'])->name('create');

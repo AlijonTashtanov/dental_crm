@@ -3,7 +3,8 @@
     Qo'shish
 @endsection
 @section('content')
-    <x-headers icon="fas fa-circle" title="Polyclinics" parent="" parent-icon="" parent-route="admin.polyclinics.index"/>
+    <x-headers icon="fas fa-circle" title="Qo'shish" parent="Klinikalar" parent-icon=""
+               parent-route="admin.polyclinics.index"/>
     <div class="card">
         <div class="card-body">
             <form action="{{route('admin.polyclinics.store')}}" method="POST">

@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 class AbstractService
 {
     //model
+    /**
+     * @param $model
+     */
     public function __construct(
         protected $model = null,
     )
@@ -17,17 +20,28 @@ class AbstractService
 
     //since we are using livewire, index is not necessary, you can overwrite if you want
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function show($id)
     {
         return $this->model::findOrFail($id);
     }
 
 
+    /**
+     * @return mixed
+     */
     public function create()
     {
         return new $this->model;
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     public function store(array $data)
     {
         $this->model->create($data);

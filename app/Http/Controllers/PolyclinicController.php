@@ -19,6 +19,8 @@ class PolyclinicController extends AbstractController
     {
         $this->config = [
             'rules' => [
+                'name' => 'required|min:3',
+                'phone' => 'required|unique:polyclinics'
             ]
         ];
     }

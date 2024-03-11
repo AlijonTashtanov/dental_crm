@@ -113,14 +113,6 @@ Route::middleware(['auth:api', 'api_admin'])->group(function () {
         Route::get('/search', [TelegramUserController::class, 'search']);
     });
 
-    // Payment types
-    Route::group(['prefix' => 'payment-type'], function () {
-        Route::get('/index', [PaymentTypeController::class, 'index']);
-        Route::post('/create', [PaymentTypeController::class, 'create']);
-        Route::put('/update/{id}', [PaymentTypeController::class, 'update']);
-        Route::delete('/delete/{id}', [PaymentTypeController::class, 'delete']);
-    });
-
 });
 
 // Reception rule

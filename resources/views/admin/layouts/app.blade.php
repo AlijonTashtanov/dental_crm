@@ -181,6 +181,9 @@
 <script src="{{asset('includes/plugins/bootstrap-switch/js/bootstrap-switch.min.js')}}"></script>
 
 <script src="{{asset('includes/plugins/select2/js/select2.full.min.js')}}"></script>
+
+<script src="https://unpkg.com/imask"></script>
+
 @livewireScripts
 @if(session()->has('success'))
     <script>
