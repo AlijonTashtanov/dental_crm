@@ -73,7 +73,9 @@ class AbstractController extends Controller
      */
     public function store(Request $request)
     {
+    //    dd($request);
         $data = $request->validate($this->config['rules']);
+    
         $this->service->store($data);
         return redirect()->route('admin.' . $this->dir . '.index')->with('success', 'Created!');
     }

@@ -20,10 +20,13 @@ class PolyclinicController extends AbstractController
         $this->config = [
             'rules' => [
                 'name' => 'required|min:3',
-                'phone' => 'required|unique:polyclinics'
+                'phone' => 'required',
+                'address' => 'required|string',
+                'region_id' => 'required|exists:regions,id',// agar status "active"/"inactive" bo‘lsa
             ]
         ];
     }
+    
 
     /**
      * @return Application|Factory|View

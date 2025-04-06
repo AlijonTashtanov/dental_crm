@@ -16,6 +16,7 @@
                     <th>Sozlamalar</th>
                 </tr>
                 @forelse($items as $item)
+         
                     <tr>
                         <td>{{ (($items->currentpage()-1)*$items->perpage()+($loop->index+1)) }}</td>
                         <td>{{$item->name}}</td>

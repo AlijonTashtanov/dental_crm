@@ -13,6 +13,9 @@ class PolyclinicService extends AbstractService
     {
         $this->model = $polyclinic;
     }
-
+    public function store(array $data)
+    {
+        Polyclinic::create($data); // Agar fillable to‘g‘ri bo‘lsa, bu eng qulay yo‘l
+    }
 
 }

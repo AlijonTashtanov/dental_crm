@@ -21,14 +21,14 @@
     <div class="form-group">
         <label for="nameInput" class="form-label">Manzili</label>
         <input type="text" class="form-control" id="nameInput" name="address"
-               value="{{old("name") ?? $response->address}}">
+               value="{{old("address") ?? $response->address}}">
         @error('address')
         <span class="text-danger">{{$message}}</span>
         @enderror
     </div>
     <div class="form-group">
         <label for="nameInput" class="form-label">Viloyat</label>
-        <select class="form-control">
+        <select class="form-control" name="region_id">
             @foreach(Region::all() as $region)
                 <option
                     {{$response->region ? $region->id == $response->region->id ? 'selected' : '' : ''}} value="{{$region->id}}">{{ $region->getTranslation('name', 'uz' )}}</option>
